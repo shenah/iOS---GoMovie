@@ -13,9 +13,12 @@
 		2733C60C21A4E83700B88FB0 /* GoMovie.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 2733C60A21A4E83700B88FB0 /* GoMovie.xcdatamodeld */; };
 		2733C60E21A4E84300B88FB0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2733C60D21A4E84300B88FB0 /* Assets.xcassets */; };
 		2733C61121A4E84300B88FB0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2733C60F21A4E84300B88FB0 /* LaunchScreen.storyboard */; };
+		2733C61921A4FED900B88FB0 /* MovieListTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2733C61821A4FED900B88FB0 /* MovieListTableViewController.swift */; };
+		3EFBF240840896B01C6E2857 /* Pods_GoMovie.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 172D6E8136211709C136B8AB /* Pods_GoMovie.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		172D6E8136211709C136B8AB /* Pods_GoMovie.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_GoMovie.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2733C60021A4E83600B88FB0 /* GoMovie.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GoMovie.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2733C60321A4E83600B88FB0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2733C60521A4E83600B88FB0 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -24,6 +27,9 @@
 		2733C60D21A4E84300B88FB0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		2733C61021A4E84300B88FB0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		2733C61221A4E84300B88FB0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		2733C61821A4FED900B88FB0 /* MovieListTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieListTableViewController.swift; sourceTree = "<group>"; };
+		370ECDDB261282461C451BDD /* Pods-GoMovie.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GoMovie.release.xcconfig"; path = "Pods/Target Support Files/Pods-GoMovie/Pods-GoMovie.release.xcconfig"; sourceTree = "<group>"; };
+		F28321026120751BE86C346E /* Pods-GoMovie.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GoMovie.debug.xcconfig"; path = "Pods/Target Support Files/Pods-GoMovie/Pods-GoMovie.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -31,6 +37,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3EFBF240840896B01C6E2857 /* Pods_GoMovie.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -42,6 +49,8 @@
 			children = (
 				2733C60221A4E83600B88FB0 /* GoMovie */,
 				2733C60121A4E83600B88FB0 /* Products */,
+				A077EE25EA81470599ECBCD6 /* Pods */,
+				D63C9CEF704FAC18768A26F9 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -63,8 +72,26 @@
 				2733C60F21A4E84300B88FB0 /* LaunchScreen.storyboard */,
 				2733C61221A4E84300B88FB0 /* Info.plist */,
 				2733C60A21A4E83700B88FB0 /* GoMovie.xcdatamodeld */,
+				2733C61821A4FED900B88FB0 /* MovieListTableViewController.swift */,
 			);
 			path = GoMovie;
+			sourceTree = "<group>";
+		};
+		A077EE25EA81470599ECBCD6 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				F28321026120751BE86C346E /* Pods-GoMovie.debug.xcconfig */,
+				370ECDDB261282461C451BDD /* Pods-GoMovie.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		D63C9CEF704FAC18768A26F9 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				172D6E8136211709C136B8AB /* Pods_GoMovie.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -74,9 +101,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 2733C61521A4E84300B88FB0 /* Build configuration list for PBXNativeTarget "GoMovie" */;
 			buildPhases = (
+				204F6C58784C85B52C4481DF /* [CP] Check Pods Manifest.lock */,
 				2733C5FC21A4E83600B88FB0 /* Sources */,
 				2733C5FD21A4E83600B88FB0 /* Frameworks */,
 				2733C5FE21A4E83600B88FB0 /* Resources */,
+				0796AA9B03346A684A1A9C01 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -133,11 +162,59 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		0796AA9B03346A684A1A9C01 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-GoMovie/Pods-GoMovie-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-GoMovie/Pods-GoMovie-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		204F6C58784C85B52C4481DF /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-GoMovie-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		2733C5FC21A4E83600B88FB0 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2733C61921A4FED900B88FB0 /* MovieListTableViewController.swift in Sources */,
 				2733C60621A4E83600B88FB0 /* ViewController.swift in Sources */,
 				2733C60C21A4E83700B88FB0 /* GoMovie.xcdatamodeld in Sources */,
 				2733C60421A4E83600B88FB0 /* AppDelegate.swift in Sources */,
@@ -284,6 +361,7 @@
 		};
 		2733C61621A4E84300B88FB0 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = F28321026120751BE86C346E /* Pods-GoMovie.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -301,6 +379,7 @@
 		};
 		2733C61721A4E84300B88FB0 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 370ECDDB261282461C451BDD /* Pods-GoMovie.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
