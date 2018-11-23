@@ -14,6 +14,7 @@
 		2733C60E21A4E84300B88FB0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2733C60D21A4E84300B88FB0 /* Assets.xcassets */; };
 		2733C61121A4E84300B88FB0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2733C60F21A4E84300B88FB0 /* LaunchScreen.storyboard */; };
 		2733C61921A4FED900B88FB0 /* MovieListTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2733C61821A4FED900B88FB0 /* MovieListTableViewController.swift */; };
+		27C99AF721A6CAA100D9E06B /* ListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27C99AF621A6CAA100D9E06B /* ListTableViewCell.swift */; };
 		3EFBF240840896B01C6E2857 /* Pods_GoMovie.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 172D6E8136211709C136B8AB /* Pods_GoMovie.framework */; };
 /* End PBXBuildFile section */
 
@@ -28,6 +29,7 @@
 		2733C61021A4E84300B88FB0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		2733C61221A4E84300B88FB0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2733C61821A4FED900B88FB0 /* MovieListTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieListTableViewController.swift; sourceTree = "<group>"; };
+		27C99AF621A6CAA100D9E06B /* ListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListTableViewCell.swift; sourceTree = "<group>"; };
 		370ECDDB261282461C451BDD /* Pods-GoMovie.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GoMovie.release.xcconfig"; path = "Pods/Target Support Files/Pods-GoMovie/Pods-GoMovie.release.xcconfig"; sourceTree = "<group>"; };
 		F28321026120751BE86C346E /* Pods-GoMovie.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GoMovie.debug.xcconfig"; path = "Pods/Target Support Files/Pods-GoMovie/Pods-GoMovie.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -73,6 +75,7 @@
 				2733C61221A4E84300B88FB0 /* Info.plist */,
 				2733C60A21A4E83700B88FB0 /* GoMovie.xcdatamodeld */,
 				2733C61821A4FED900B88FB0 /* MovieListTableViewController.swift */,
+				27C99AF621A6CAA100D9E06B /* ListTableViewCell.swift */,
 			);
 			path = GoMovie;
 			sourceTree = "<group>";
@@ -218,6 +221,7 @@
 				2733C60621A4E83600B88FB0 /* ViewController.swift in Sources */,
 				2733C60C21A4E83700B88FB0 /* GoMovie.xcdatamodeld in Sources */,
 				2733C60421A4E83600B88FB0 /* AppDelegate.swift in Sources */,
+				27C99AF721A6CAA100D9E06B /* ListTableViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

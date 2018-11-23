@@ -23,9 +23,14 @@ class ViewController: UIViewController {
     //AppDelegate 객체에 대한 참조 변수
     var appDelegate : AppDelegate!
     
+    //로그인 화면의 X를 눌렀을 때
     @IBAction func skip(_ sender: Any) {
         let movieListTVC = self.storyboard?.instantiateViewController(withIdentifier: "MovieListTableViewController") as! MovieListTableViewController
-        self.present(movieListTVC, animated: true)
+        let tabBarController = self.storyboard?.instantiateViewController(withIdentifier: "tabbarController") as! UITabBarController
+        tabBarController.setViewControllers([movieListTVC], animated: false)
+        let navigationController = UINavigationController.init(rootViewController: tabBarController)
+        
+       self.present(navigationController, animated: true)
     }
     @IBAction func login(_ sender: Any) {
         if btnlogin.title(for: .normal) == "로그아웃"{
@@ -42,9 +47,9 @@ class ViewController: UIViewController {
             //결과 사용
             request.responseJSON{
                 response in
-                print(response.result.value!)
+                //print(response.result.value!)
                 let jsonObject = response.result.value as! [String:Any]
-                print(jsonObject)
+                //print(jsonObject)
                 let result = jsonObject["member"] as! NSDictionary
                 let id = result["id"] as! NSString
                 if id == "NULL"{
