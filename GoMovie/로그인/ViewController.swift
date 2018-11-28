@@ -25,9 +25,9 @@ class ViewController: UIViewController {
     
     //로그인 화면의 X를 눌렀을 때
     @IBAction func skip(_ sender: Any) {
-        let movieListTVC = self.storyboard?.instantiateViewController(withIdentifier: "MovieListTableViewController") as! MovieListTableViewController
+        let movieListVC = self.storyboard?.instantiateViewController(withIdentifier: "MovieListViewController") as! MovieListViewController
         let tabBarController = self.storyboard?.instantiateViewController(withIdentifier: "tabbarController") as! UITabBarController
-        tabBarController.setViewControllers([movieListTVC], animated: false)
+        tabBarController.setViewControllers([movieListVC], animated: false)
         let navigationController = UINavigationController.init(rootViewController: tabBarController)
         
        self.present(navigationController, animated: true)
@@ -60,13 +60,10 @@ class ViewController: UIViewController {
                     self.appDelegate.image =
                         (result["image"] as! NSString) as String
                     
-                    let tabbarController = self.storyboard?.instantiateViewController(withIdentifier: "tabbarController") as! UITabBarController
-                
-                    let movieListTVC = self.storyboard?.instantiateViewController(withIdentifier: "MovieListTableViewController") as! MovieListTableViewController
-                    
-                    tabbarController.setViewControllers([movieListTVC], animated: false)
-                    
-                    let navigationController = UINavigationController.init(rootViewController: tabbarController)
+                    let movieListVC = self.storyboard?.instantiateViewController(withIdentifier: "MovieListViewController") as! MovieListViewController
+                    let tabBarController = self.storyboard?.instantiateViewController(withIdentifier: "tabbarController") as! UITabBarController
+                    tabBarController.setViewControllers([movieListVC], animated: false)
+                    let navigationController = UINavigationController.init(rootViewController: tabBarController)
                     
                     self.present(navigationController, animated: true)
                 }

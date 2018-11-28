@@ -7,19 +7,25 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2727814021AE6E6900A80C2E /* RatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2727813F21AE6E6900A80C2E /* RatingView.swift */; };
 		2733C60421A4E83600B88FB0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2733C60321A4E83600B88FB0 /* AppDelegate.swift */; };
 		2733C60621A4E83600B88FB0 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2733C60521A4E83600B88FB0 /* ViewController.swift */; };
 		2733C60921A4E83700B88FB0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2733C60721A4E83700B88FB0 /* Main.storyboard */; };
 		2733C60C21A4E83700B88FB0 /* GoMovie.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 2733C60A21A4E83700B88FB0 /* GoMovie.xcdatamodeld */; };
 		2733C60E21A4E84300B88FB0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2733C60D21A4E84300B88FB0 /* Assets.xcassets */; };
 		2733C61121A4E84300B88FB0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2733C60F21A4E84300B88FB0 /* LaunchScreen.storyboard */; };
-		2733C61921A4FED900B88FB0 /* MovieListTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2733C61821A4FED900B88FB0 /* MovieListTableViewController.swift */; };
+		276CD24521AE1F06001226C4 /* DisplayMapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 276CD24421AE1F06001226C4 /* DisplayMapViewController.swift */; };
 		27C99AF721A6CAA100D9E06B /* ListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27C99AF621A6CAA100D9E06B /* ListTableViewCell.swift */; };
+		27D256B521ABEDFF0036165C /* MovieListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27D256B421ABEDFF0036165C /* MovieListViewController.swift */; };
+		27D256B921ACDD2B0036165C /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27D256B821ACDD2B0036165C /* DetailViewController.swift */; };
+		27D256BB21ACFB7D0036165C /* ThearterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27D256BA21ACFB7D0036165C /* ThearterViewController.swift */; };
+		27D256BD21AD12CF0036165C /* ThearterTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27D256BC21AD12CF0036165C /* ThearterTableViewCell.swift */; };
 		3EFBF240840896B01C6E2857 /* Pods_GoMovie.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 172D6E8136211709C136B8AB /* Pods_GoMovie.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		172D6E8136211709C136B8AB /* Pods_GoMovie.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_GoMovie.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		2727813F21AE6E6900A80C2E /* RatingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingView.swift; sourceTree = "<group>"; };
 		2733C60021A4E83600B88FB0 /* GoMovie.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GoMovie.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2733C60321A4E83600B88FB0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2733C60521A4E83600B88FB0 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -28,8 +34,12 @@
 		2733C60D21A4E84300B88FB0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		2733C61021A4E84300B88FB0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		2733C61221A4E84300B88FB0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		2733C61821A4FED900B88FB0 /* MovieListTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieListTableViewController.swift; sourceTree = "<group>"; };
+		276CD24421AE1F06001226C4 /* DisplayMapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayMapViewController.swift; sourceTree = "<group>"; };
 		27C99AF621A6CAA100D9E06B /* ListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListTableViewCell.swift; sourceTree = "<group>"; };
+		27D256B421ABEDFF0036165C /* MovieListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieListViewController.swift; sourceTree = "<group>"; };
+		27D256B821ACDD2B0036165C /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
+		27D256BA21ACFB7D0036165C /* ThearterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThearterViewController.swift; sourceTree = "<group>"; };
+		27D256BC21AD12CF0036165C /* ThearterTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThearterTableViewCell.swift; sourceTree = "<group>"; };
 		370ECDDB261282461C451BDD /* Pods-GoMovie.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GoMovie.release.xcconfig"; path = "Pods/Target Support Files/Pods-GoMovie/Pods-GoMovie.release.xcconfig"; sourceTree = "<group>"; };
 		F28321026120751BE86C346E /* Pods-GoMovie.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GoMovie.debug.xcconfig"; path = "Pods/Target Support Files/Pods-GoMovie/Pods-GoMovie.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -46,6 +56,35 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2722015121AE60B00003492D /* 영화상세보기  */ = {
+			isa = PBXGroup;
+			children = (
+				27D256B821ACDD2B0036165C /* DetailViewController.swift */,
+			);
+			name = "영화상세보기 ";
+			path = "영화상세보기 ";
+			sourceTree = "<group>";
+		};
+		2722015221AE60EA0003492D /* 극장 */ = {
+			isa = PBXGroup;
+			children = (
+				276CD24421AE1F06001226C4 /* DisplayMapViewController.swift */,
+				27D256BA21ACFB7D0036165C /* ThearterViewController.swift */,
+				27D256BC21AD12CF0036165C /* ThearterTableViewCell.swift */,
+			);
+			name = "극장";
+			path = "극장";
+			sourceTree = "<group>";
+		};
+		2722015321AE61070003492D /* 로그인&회원가입 */ = {
+			isa = PBXGroup;
+			children = (
+				2733C60521A4E83600B88FB0 /* ViewController.swift */,
+			);
+			name = "로그인&회원가입";
+			path = "로그인";
+			sourceTree = "<group>";
+		};
 		2733C5F721A4E83600B88FB0 = {
 			isa = PBXGroup;
 			children = (
@@ -67,15 +106,18 @@
 		2733C60221A4E83600B88FB0 /* GoMovie */ = {
 			isa = PBXGroup;
 			children = (
+				2722015321AE61070003492D /* 로그인&회원가입 */,
+				2722015221AE60EA0003492D /* 극장 */,
+				2722015121AE60B00003492D /* 영화상세보기  */,
 				2733C60321A4E83600B88FB0 /* AppDelegate.swift */,
-				2733C60521A4E83600B88FB0 /* ViewController.swift */,
 				2733C60721A4E83700B88FB0 /* Main.storyboard */,
 				2733C60D21A4E84300B88FB0 /* Assets.xcassets */,
 				2733C60F21A4E84300B88FB0 /* LaunchScreen.storyboard */,
 				2733C61221A4E84300B88FB0 /* Info.plist */,
 				2733C60A21A4E83700B88FB0 /* GoMovie.xcdatamodeld */,
-				2733C61821A4FED900B88FB0 /* MovieListTableViewController.swift */,
+				27D256B421ABEDFF0036165C /* MovieListViewController.swift */,
 				27C99AF621A6CAA100D9E06B /* ListTableViewCell.swift */,
+				2727813F21AE6E6900A80C2E /* RatingView.swift */,
 			);
 			path = GoMovie;
 			sourceTree = "<group>";
@@ -217,11 +259,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2733C61921A4FED900B88FB0 /* MovieListTableViewController.swift in Sources */,
+				2727814021AE6E6900A80C2E /* RatingView.swift in Sources */,
+				27D256BD21AD12CF0036165C /* ThearterTableViewCell.swift in Sources */,
 				2733C60621A4E83600B88FB0 /* ViewController.swift in Sources */,
+				27D256BB21ACFB7D0036165C /* ThearterViewController.swift in Sources */,
 				2733C60C21A4E83700B88FB0 /* GoMovie.xcdatamodeld in Sources */,
+				27D256B521ABEDFF0036165C /* MovieListViewController.swift in Sources */,
+				276CD24521AE1F06001226C4 /* DisplayMapViewController.swift in Sources */,
 				2733C60421A4E83600B88FB0 /* AppDelegate.swift in Sources */,
 				27C99AF721A6CAA100D9E06B /* ListTableViewCell.swift in Sources */,
+				27D256B921ACDD2B0036165C /* DetailViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
