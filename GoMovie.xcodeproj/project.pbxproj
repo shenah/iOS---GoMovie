@@ -8,12 +8,16 @@
 
 /* Begin PBXBuildFile section */
 		2727814021AE6E6900A80C2E /* RatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2727813F21AE6E6900A80C2E /* RatingView.swift */; };
+		2727814221AEB05700A80C2E /* DetailHeadView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2727814121AEB05700A80C2E /* DetailHeadView.xib */; };
 		2733C60421A4E83600B88FB0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2733C60321A4E83600B88FB0 /* AppDelegate.swift */; };
 		2733C60621A4E83600B88FB0 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2733C60521A4E83600B88FB0 /* ViewController.swift */; };
 		2733C60921A4E83700B88FB0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2733C60721A4E83700B88FB0 /* Main.storyboard */; };
 		2733C60C21A4E83700B88FB0 /* GoMovie.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 2733C60A21A4E83700B88FB0 /* GoMovie.xcdatamodeld */; };
 		2733C60E21A4E84300B88FB0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2733C60D21A4E84300B88FB0 /* Assets.xcassets */; };
 		2733C61121A4E84300B88FB0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2733C60F21A4E84300B88FB0 /* LaunchScreen.storyboard */; };
+		275809BB21AEB6E300301B8E /* DetailHeadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 275809BA21AEB6E300301B8E /* DetailHeadView.swift */; };
+		275809C121AFA66200301B8E /* MovieVO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 275809C021AFA66200301B8E /* MovieVO.swift */; };
+		275C5CBD21AFEBDC0076F7DF /* RegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 275C5CBC21AFEBDC0076F7DF /* RegisterViewController.swift */; };
 		276CD24521AE1F06001226C4 /* DisplayMapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 276CD24421AE1F06001226C4 /* DisplayMapViewController.swift */; };
 		27C99AF721A6CAA100D9E06B /* ListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27C99AF621A6CAA100D9E06B /* ListTableViewCell.swift */; };
 		27D256B521ABEDFF0036165C /* MovieListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27D256B421ABEDFF0036165C /* MovieListViewController.swift */; };
@@ -26,6 +30,7 @@
 /* Begin PBXFileReference section */
 		172D6E8136211709C136B8AB /* Pods_GoMovie.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_GoMovie.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2727813F21AE6E6900A80C2E /* RatingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingView.swift; sourceTree = "<group>"; };
+		2727814121AEB05700A80C2E /* DetailHeadView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DetailHeadView.xib; sourceTree = "<group>"; };
 		2733C60021A4E83600B88FB0 /* GoMovie.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GoMovie.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2733C60321A4E83600B88FB0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2733C60521A4E83600B88FB0 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -34,6 +39,9 @@
 		2733C60D21A4E84300B88FB0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		2733C61021A4E84300B88FB0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		2733C61221A4E84300B88FB0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		275809BA21AEB6E300301B8E /* DetailHeadView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailHeadView.swift; sourceTree = "<group>"; };
+		275809C021AFA66200301B8E /* MovieVO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieVO.swift; sourceTree = "<group>"; };
+		275C5CBC21AFEBDC0076F7DF /* RegisterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
 		276CD24421AE1F06001226C4 /* DisplayMapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayMapViewController.swift; sourceTree = "<group>"; };
 		27C99AF621A6CAA100D9E06B /* ListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListTableViewCell.swift; sourceTree = "<group>"; };
 		27D256B421ABEDFF0036165C /* MovieListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieListViewController.swift; sourceTree = "<group>"; };
@@ -59,7 +67,10 @@
 		2722015121AE60B00003492D /* 영화상세보기  */ = {
 			isa = PBXGroup;
 			children = (
+				2727814121AEB05700A80C2E /* DetailHeadView.xib */,
+				275809BA21AEB6E300301B8E /* DetailHeadView.swift */,
 				27D256B821ACDD2B0036165C /* DetailViewController.swift */,
+				275809C021AFA66200301B8E /* MovieVO.swift */,
 			);
 			name = "영화상세보기 ";
 			path = "영화상세보기 ";
@@ -80,6 +91,7 @@
 			isa = PBXGroup;
 			children = (
 				2733C60521A4E83600B88FB0 /* ViewController.swift */,
+				275C5CBC21AFEBDC0076F7DF /* RegisterViewController.swift */,
 			);
 			name = "로그인&회원가입";
 			path = "로그인";
@@ -107,19 +119,28 @@
 			isa = PBXGroup;
 			children = (
 				2722015321AE61070003492D /* 로그인&회원가입 */,
-				2722015221AE60EA0003492D /* 극장 */,
+				275C5CBE21AFEBE50076F7DF /* 영화리스트 */,
 				2722015121AE60B00003492D /* 영화상세보기  */,
+				2722015221AE60EA0003492D /* 극장 */,
 				2733C60321A4E83600B88FB0 /* AppDelegate.swift */,
 				2733C60721A4E83700B88FB0 /* Main.storyboard */,
 				2733C60D21A4E84300B88FB0 /* Assets.xcassets */,
 				2733C60F21A4E84300B88FB0 /* LaunchScreen.storyboard */,
 				2733C61221A4E84300B88FB0 /* Info.plist */,
 				2733C60A21A4E83700B88FB0 /* GoMovie.xcdatamodeld */,
+			);
+			path = GoMovie;
+			sourceTree = "<group>";
+		};
+		275C5CBE21AFEBE50076F7DF /* 영화리스트 */ = {
+			isa = PBXGroup;
+			children = (
 				27D256B421ABEDFF0036165C /* MovieListViewController.swift */,
 				27C99AF621A6CAA100D9E06B /* ListTableViewCell.swift */,
 				2727813F21AE6E6900A80C2E /* RatingView.swift */,
 			);
-			path = GoMovie;
+			name = "영화리스트";
+			path = "영화리스트";
 			sourceTree = "<group>";
 		};
 		A077EE25EA81470599ECBCD6 /* Pods */ = {
@@ -202,6 +223,7 @@
 				2733C61121A4E84300B88FB0 /* LaunchScreen.storyboard in Resources */,
 				2733C60E21A4E84300B88FB0 /* Assets.xcassets in Resources */,
 				2733C60921A4E83700B88FB0 /* Main.storyboard in Resources */,
+				2727814221AEB05700A80C2E /* DetailHeadView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -264,9 +286,12 @@
 				2733C60621A4E83600B88FB0 /* ViewController.swift in Sources */,
 				27D256BB21ACFB7D0036165C /* ThearterViewController.swift in Sources */,
 				2733C60C21A4E83700B88FB0 /* GoMovie.xcdatamodeld in Sources */,
+				275809BB21AEB6E300301B8E /* DetailHeadView.swift in Sources */,
 				27D256B521ABEDFF0036165C /* MovieListViewController.swift in Sources */,
 				276CD24521AE1F06001226C4 /* DisplayMapViewController.swift in Sources */,
 				2733C60421A4E83600B88FB0 /* AppDelegate.swift in Sources */,
+				275809C121AFA66200301B8E /* MovieVO.swift in Sources */,
+				275C5CBD21AFEBDC0076F7DF /* RegisterViewController.swift in Sources */,
 				27C99AF721A6CAA100D9E06B /* ListTableViewCell.swift in Sources */,
 				27D256B921ACDD2B0036165C /* DetailViewController.swift in Sources */,
 			);

@@ -24,6 +24,7 @@ class MovieListViewController: UIViewController {
     @IBOutlet weak var playinglbl: UILabel!
     @IBOutlet weak var cominglbl: UILabel!
     @IBOutlet weak var tableView: UITableView!
+    
     @IBAction func nowplaying(_ sender: Any) {
         param = "now_playing"
         //let btn = sender as! UIButton
@@ -120,6 +121,7 @@ class MovieListViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+
         
         //로그인 정보 설정
         //print(appDelegate.id + appDelegate.nickname)
@@ -158,11 +160,15 @@ extension MovieListViewController : UITableViewDelegate, UITableViewDataSource{
         
         cell.title.text = movieData.value(forKey: "title") as? String
         
-        let vote = movieData.value(forKey: "voteAverage") as! Double
-        cell.voteAverage.text = "평점: \(String(format: "%.1f", vote))"
-        //비동기적으로 출력
+        let voteAverage = movieData.value(forKey: "voteAverage") as! Double
+        cell.voteAverage.text = "평점: \(String(format: "%.1f", voteAverage))"
+        //비동기적으로 별image출력
         DispatchQueue.main.async {
-            RatingView.showInView(view: cell.ratingView, value: vote/2)
+            //if voteAverage != 0.0{
+                RatingView.showInView(view: cell.ratingView, value: voteAverage/2)
+//            }else{
+//                RatingView.showNORating(view: cell.ratingView)
+//            }
         }
         
         cell.releaseDate.text = movieData.value(forKey: "releaseDate") as? String
@@ -182,9 +188,8 @@ extension MovieListViewController : UITableViewDelegate, UITableViewDataSource{
         //선택한 movieId 찾아오기
         let movieData = self.coreList[indexPath.row]
         
-        detailViewController.movieId = movieData.value(forKey: "movieId") as! Int
-        detailViewController.posterData = movieData.value(forKey: "posterData") as! Data
-        detailViewController.movieTitle = movieData.value(forKey: "movieTitle") as! String
+        detailViewController.movieVO.movieId = movieData.value(forKey: "movieId") as? Int
+        detailViewController.movieVO.posterData = movieData.value(forKey: "posterData") as? Data
         //print(detailViewController.linkUrl)
         self.navigationController?.pushViewController(detailViewController, animated: true)
     }

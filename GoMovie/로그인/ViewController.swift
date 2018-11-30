@@ -25,12 +25,16 @@ class ViewController: UIViewController {
     
     //로그인 화면의 X를 눌렀을 때
     @IBAction func skip(_ sender: Any) {
-        let movieListVC = self.storyboard?.instantiateViewController(withIdentifier: "MovieListViewController") as! MovieListViewController
-        let tabBarController = self.storyboard?.instantiateViewController(withIdentifier: "tabbarController") as! UITabBarController
-        tabBarController.setViewControllers([movieListVC], animated: false)
-        let navigationController = UINavigationController.init(rootViewController: tabBarController)
-        
-       self.present(navigationController, animated: true)
+        //비동기적으로 이동
+        DispatchQueue.main.async {
+            let movieListVC = self.storyboard?.instantiateViewController(withIdentifier: "MovieListViewController") as! MovieListViewController
+            let tabBarController = self.storyboard?.instantiateViewController(withIdentifier: "tabbarController") as! UITabBarController
+            tabBarController.setViewControllers([movieListVC], animated: false)
+            let navigationController = UINavigationController.init(rootViewController: tabBarController)
+            
+            self.present(navigationController, animated: true)
+        }
+
     }
     @IBAction func login(_ sender: Any) {
         if btnlogin.title(for: .normal) == "로그아웃"{
@@ -54,6 +58,8 @@ class ViewController: UIViewController {
                 let id = result["id"] as! NSString
                 if id == "NULL"{
                     self.label.text = "아이디 혹은 비밀번호가 틀렸습니다."
+                    self.label.textColor = UIColor.red
+                    self.label.textAlignment = .center
                 }else{
                     self.appDelegate.id = id as String
                     self.appDelegate.nickname = (result["nickname"] as! NSString) as String
@@ -72,6 +78,12 @@ class ViewController: UIViewController {
         }
     }
     
+
+    @IBAction func register(_ sender: Any) {
+        let registerViewController = self.storyboard?.instantiateViewController(withIdentifier: "RegisterViewController") as! RegisterViewController
+        self.present(registerViewController, animated: true)
+        
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         appDelegate = UIApplication.shared.delegate as! AppDelegate
@@ -84,9 +96,8 @@ class ViewController: UIViewController {
         //화면 생성시 로그인 확인
         if appDelegate.id == nil {
             btnlogin.setTitle("로그인", for: .normal)
-            //self.dismiss(animated: <#T##Bool#>, completion: <#T##(() -> Void)?##(() -> Void)?##() -> Void#>)
         }else{
-            btnlogin.setTitle("로그아웃", for: .normal)
+            self.dismiss(animated: false)
         }
     }
 
