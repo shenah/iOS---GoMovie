@@ -18,7 +18,8 @@ class ViewController: UIViewController {
     @IBOutlet weak var pwtxt: UITextField!
     
     @IBOutlet weak var btnlogin: UIButton!
-   
+    @IBOutlet weak var btnreg: UIButton!
+    
     @IBOutlet weak var label: UILabel!
     //AppDelegate 객체에 대한 참조 변수
     var appDelegate : AppDelegate!
@@ -89,6 +90,8 @@ class ViewController: UIViewController {
         appDelegate = UIApplication.shared.delegate as! AppDelegate
         idtxt.placeholder = "아이디"
         pwtxt.placeholder = "비밀번호"
+        btnlogin.layer.cornerRadius = 5
+        btnreg.layer.cornerRadius = 5
        
     }
     override func viewWillAppear(_ animated: Bool) {

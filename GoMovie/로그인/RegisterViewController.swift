@@ -10,13 +10,39 @@ import UIKit
 
 class RegisterViewController: UIViewController {
 
+
     @IBOutlet weak var profilePhoto: UIImageView!
-    @IBOutlet weak var id: UITextField!
-    @IBOutlet weak var nickname: UITextField!
-    @IBOutlet weak var pw: UITextField!
-    @IBOutlet weak var pwConfrim: UITextField!
+    @IBOutlet weak var idTF: UITextField!
+    @IBOutlet weak var nicknameTF: UITextField!
+    @IBOutlet weak var pwTF: UITextField!
+    @IBOutlet weak var pwConTF: UITextField!
     @IBOutlet weak var regbtn: UIButton!
-    @IBAction func register(_ sender: Any) {
+    @IBOutlet weak var cancelbtn: UIButton!
+    
+
+    @IBAction func pickImg(_ sender: Any) {
+        //대화상자 생성
+        let select = UIAlertController(title:"이미지를 가져올 곳을 선택하세요!", message:nil, preferredStyle:.actionSheet)
+        select.addAction(UIAlertAction(title:"카메라", style:.default){
+            (_) in self.presentPicker(source:.camera)
+        })
+        select.addAction(UIAlertAction(title:"앨범", style:.default){
+            (_) in self.presentPicker(source:.savedPhotosAlbum)
+        })
+        select.addAction(UIAlertAction(title:"사진 라이브러리", style:.default){
+            (_) in self.presentPicker(source:.photoLibrary)
+        })
+        self.present(select, animated:true)
+
+    }
+    
+    @IBAction func signUp(_ sender: Any) {
+        var profileImg = profilePhoto.image
+        var id = idTF.text
+        var nickname = nicknameTF.text
+        var pw = pwTF.text
+        var pwCon = pwConTF.text
+        
         
     }
     
@@ -24,23 +50,49 @@ class RegisterViewController: UIViewController {
         self.dismiss(animated: true)
     }
     
+    func presentPicker(source: UIImagePickerController.SourceType){
+        //유효한 소스타입이 아니면 중단
+        guard UIImagePickerController.isSourceTypeAvailable(source) == true else{
+            let alert = UIAlertController(title:"사용할 수 없는 타입입니다.", message:nil, preferredStyle:.alert)
+            alert.addAction(UIAlertAction(title: "확인", style: .cancel))
+            self.present(alert, animated:false)
+            return
+        }
+        let picker = UIImagePickerController()
+        picker.delegate = self
+        picker.allowsEditing = true
+        picker.sourceType = source
+        
+        self.present(picker, animated:true )
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        regbtn.layer.cornerRadius = 3
+        profilePhoto.image = UIImage(named: "account.jpg")
+        //네모난 이미지 뷰를 등글게 만들기
+        profilePhoto.layer.cornerRadius = (profilePhoto.frame.width/2)
+        profilePhoto.layer.borderWidth = 0
+        profilePhoto.layer.masksToBounds = true
+
+        idTF.placeholder = "아이디"
+        nicknameTF.placeholder = "닉넴"
+        pwTF.placeholder = "비밀번호"
+        pwConTF.placeholder = "비밀번호 확인"
+        regbtn.layer.cornerRadius = 5
+        cancelbtn.layer.cornerRadius = 5
         
         
     }
     
 
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+}
+extension RegisterViewController : UIImagePickerControllerDelegate, UINavigationControllerDelegate{
+    //이미지 선택했을 때 호출되는 메소드
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]){
+        self.profilePhoto.image =
+            info[UIImagePickerController.InfoKey.editedImage] as? UIImage
+        picker.dismiss(animated:false)
     }
-    */
 
 }

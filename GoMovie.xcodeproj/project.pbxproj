@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		2727814021AE6E6900A80C2E /* RatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2727813F21AE6E6900A80C2E /* RatingView.swift */; };
 		2727814221AEB05700A80C2E /* DetailHeadView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2727814121AEB05700A80C2E /* DetailHeadView.xib */; };
+		272BD97D21B0FFE300041B8B /* MemberViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 272BD97C21B0FFE300041B8B /* MemberViewController.swift */; };
+		272BD9D121B1357000041B8B /* account@2x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 272BD9D021B1357000041B8B /* account@2x.jpg */; };
 		2733C60421A4E83600B88FB0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2733C60321A4E83600B88FB0 /* AppDelegate.swift */; };
 		2733C60621A4E83600B88FB0 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2733C60521A4E83600B88FB0 /* ViewController.swift */; };
 		2733C60921A4E83700B88FB0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2733C60721A4E83700B88FB0 /* Main.storyboard */; };
@@ -31,6 +33,8 @@
 		172D6E8136211709C136B8AB /* Pods_GoMovie.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_GoMovie.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2727813F21AE6E6900A80C2E /* RatingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingView.swift; sourceTree = "<group>"; };
 		2727814121AEB05700A80C2E /* DetailHeadView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DetailHeadView.xib; sourceTree = "<group>"; };
+		272BD97C21B0FFE300041B8B /* MemberViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemberViewController.swift; sourceTree = "<group>"; };
+		272BD9D021B1357000041B8B /* account@2x.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "account@2x.jpg"; sourceTree = "<group>"; };
 		2733C60021A4E83600B88FB0 /* GoMovie.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GoMovie.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2733C60321A4E83600B88FB0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2733C60521A4E83600B88FB0 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -97,6 +101,23 @@
 			path = "로그인";
 			sourceTree = "<group>";
 		};
+		272BD97E21B1003B00041B8B /* 회원페이지 */ = {
+			isa = PBXGroup;
+			children = (
+				272BD97C21B0FFE300041B8B /* MemberViewController.swift */,
+			);
+			name = "회원페이지";
+			path = "회원페이지";
+			sourceTree = "<group>";
+		};
+		272BD9CF21B1356500041B8B /* icon */ = {
+			isa = PBXGroup;
+			children = (
+				272BD9D021B1357000041B8B /* account@2x.jpg */,
+			);
+			path = icon;
+			sourceTree = "<group>";
+		};
 		2733C5F721A4E83600B88FB0 = {
 			isa = PBXGroup;
 			children = (
@@ -118,8 +139,10 @@
 		2733C60221A4E83600B88FB0 /* GoMovie */ = {
 			isa = PBXGroup;
 			children = (
+				272BD9CF21B1356500041B8B /* icon */,
 				2722015321AE61070003492D /* 로그인&회원가입 */,
 				275C5CBE21AFEBE50076F7DF /* 영화리스트 */,
+				272BD97E21B1003B00041B8B /* 회원페이지 */,
 				2722015121AE60B00003492D /* 영화상세보기  */,
 				2722015221AE60EA0003492D /* 극장 */,
 				2733C60321A4E83600B88FB0 /* AppDelegate.swift */,
@@ -222,6 +245,7 @@
 			files = (
 				2733C61121A4E84300B88FB0 /* LaunchScreen.storyboard in Resources */,
 				2733C60E21A4E84300B88FB0 /* Assets.xcassets in Resources */,
+				272BD9D121B1357000041B8B /* account@2x.jpg in Resources */,
 				2733C60921A4E83700B88FB0 /* Main.storyboard in Resources */,
 				2727814221AEB05700A80C2E /* DetailHeadView.xib in Resources */,
 			);
@@ -289,6 +313,7 @@
 				275809BB21AEB6E300301B8E /* DetailHeadView.swift in Sources */,
 				27D256B521ABEDFF0036165C /* MovieListViewController.swift in Sources */,
 				276CD24521AE1F06001226C4 /* DisplayMapViewController.swift in Sources */,
+				272BD97D21B0FFE300041B8B /* MemberViewController.swift in Sources */,
 				2733C60421A4E83600B88FB0 /* AppDelegate.swift in Sources */,
 				275809C121AFA66200301B8E /* MovieVO.swift in Sources */,
 				275C5CBD21AFEBDC0076F7DF /* RegisterViewController.swift in Sources */,

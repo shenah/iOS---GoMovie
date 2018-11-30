@@ -10,10 +10,10 @@ import UIKit
 import Alamofire
 import CoreData
 class MovieListViewController: UIViewController {
-    
+
     //AppDelegate 객체에 대한 참조 변수
     var appDelegate = UIApplication.shared.delegate as! AppDelegate
-
+    
     // 출력할 데이터 parameter
     var param : String = "now_playing"
     
@@ -121,19 +121,6 @@ class MovieListViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        
-        //로그인 정보 설정
-        //print(appDelegate.id + appDelegate.nickname)
-        if self.appDelegate.id != nil {
-            //self.tabBarController?.title = appDelegate.nickname + "님"
-            //let image = appDelegate.image
-            //print(image!)
-            //let request = Alamofire.request("http://192.168.0.113:8080/MobileServer/images/\(image)", method:.get, parameters:nil)
-            //request.responseJSON(completionHandler:)
-        }else{
-            self.title = "로그인"
-        }
         
         //데이터 다운로드 - 인터넷 사용 가능할 때
         self.download("now_playing")
