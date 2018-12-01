@@ -7,7 +7,7 @@
 //
 
 import UIKit
-
+import Alamofire
 class RegisterViewController: UIViewController {
 
 
@@ -19,7 +19,9 @@ class RegisterViewController: UIViewController {
     @IBOutlet weak var regbtn: UIButton!
     @IBOutlet weak var cancelbtn: UIButton!
     
-
+    //선택한 이미지 파일의 URL과 이름을 저장하는 변수
+    var imageURL : URL!
+    
     @IBAction func pickImg(_ sender: Any) {
         //대화상자 생성
         let select = UIAlertController(title:"이미지를 가져올 곳을 선택하세요!", message:nil, preferredStyle:.actionSheet)
@@ -32,18 +34,43 @@ class RegisterViewController: UIViewController {
         select.addAction(UIAlertAction(title:"사진 라이브러리", style:.default){
             (_) in self.presentPicker(source:.photoLibrary)
         })
+        select.addAction(UIAlertAction(title: "취소", style: .cancel))
         self.present(select, animated:true)
 
     }
     
     @IBAction func signUp(_ sender: Any) {
-        var profileImg = profilePhoto.image
-        var id = idTF.text
-        var nickname = nicknameTF.text
-        var pw = pwTF.text
-        var pwCon = pwConTF.text
+        //파라이터 가져오기
+        let id = idTF.text!
+        let nickname = nicknameTF.text!
+        let pw = pwTF.text!
+        let pwCon = pwConTF.text!
+
+        guard id.count != 0 else{
+            return
+        }
         
+        let parameters = ["id" : id,
+                          "nickname" : nickname,
+                          "pw" : pw]
         
+        Alamofire.upload(multipartFormData: {multipartFormData in
+            multipartFormData.append(self.imageURL, withName: "image")
+            for p in parameters{
+                multipartFormData.append((p.value.data(using: String.Encoding.utf8))!, withName: p.key)
+            }
+        }, to: "http://192.168.0.113:8080/MobileServer/member/register", method: .post, encodingCompletion: {encodingResult in
+            switch encodingResult {
+        case .success(let upload, _, _):
+            upload.response(completionHandler: { (response) in
+                print(response.data!)
+            })
+            
+        case .failure(let encodingError):
+            print("error:\(encodingError)")
+            }
+        })
+
     }
     
     @IBAction func cancel(_ sender: Any) {
@@ -92,6 +119,8 @@ extension RegisterViewController : UIImagePickerControllerDelegate, UINavigation
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]){
         self.profilePhoto.image =
             info[UIImagePickerController.InfoKey.editedImage] as? UIImage
+        imageURL = info[UIImagePickerController.InfoKey.imageURL] as! URL
+        print(imageURL)
         picker.dismiss(animated:false)
     }
 
