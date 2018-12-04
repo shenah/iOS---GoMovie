@@ -29,8 +29,9 @@ class ViewController: UIViewController {
         //비동기적으로 이동
         DispatchQueue.main.async {
             let movieListVC = self.storyboard?.instantiateViewController(withIdentifier: "MovieListViewController") as! MovieListViewController
+            let profileViewController = self.storyboard?.instantiateViewController(withIdentifier: "ProfileViewController") as! ProfileViewController
             let tabBarController = self.storyboard?.instantiateViewController(withIdentifier: "tabbarController") as! UITabBarController
-            tabBarController.setViewControllers([movieListVC], animated: false)
+            tabBarController.setViewControllers([movieListVC, profileViewController], animated: false)
             let navigationController = UINavigationController.init(rootViewController: tabBarController)
             
             self.present(navigationController, animated: true)
@@ -38,47 +39,50 @@ class ViewController: UIViewController {
 
     }
     @IBAction func login(_ sender: Any) {
-        if btnlogin.title(for: .normal) == "로그아웃"{
-            appDelegate.id = nil
-            appDelegate.nickname = nil
-            appDelegate.image = nil
-            btnlogin.setTitle("로그인", for: .normal)
-        }else{
-            let id = idtxt.text
-            let pw = pwtxt.text
+        guard let i = idtxt.text, let p = pwtxt.text else{
+            self.label.text = "아이디와 비밀번호를 입력하세요!"
+            return
+        }
+        
+        let id = idtxt.text
+        let pw = pwtxt.text
+        
+        //id pw 확인
+        let request = Alamofire.request("http://192.168.0.113:8080/MobileServer/member/login?id=\(id!)&pw=\(pw!)", method:.get, parameters:nil)
+        //결과
+        request.responseJSON{
+            response in
+            //print(response.result.value!)
+            let jsonObject = response.result.value as! [String:Any]
+            print(jsonObject)
+            let result = jsonObject["member"] as! NSDictionary
             
-            //id pw 확인
-            let request = Alamofire.request("http://192.168.0.113:8080/MobileServer/member/login?id=\(id!)", method:.get, parameters:nil)
-            //결과 사용
-            request.responseJSON{
-                response in
-                //print(response.result.value!)
-                let jsonObject = response.result.value as! [String:Any]
-                //print(jsonObject)
-                let result = jsonObject["member"] as! NSDictionary
-                let id = result["id"] as! NSString
-                if id == "NULL"{
-                    self.label.text = "아이디 혹은 비밀번호가 틀렸습니다."
-                    self.label.textColor = UIColor.red
-                    self.label.textAlignment = .center
-                }else{
-                    self.appDelegate.id = id as String
-                    self.appDelegate.nickname = (result["nickname"] as! NSString) as String
-                    self.appDelegate.image =
-                        (result["image"] as! NSString) as String
-                    
-                    let movieListVC = self.storyboard?.instantiateViewController(withIdentifier: "MovieListViewController") as! MovieListViewController
-                    let tabBarController = self.storyboard?.instantiateViewController(withIdentifier: "tabbarController") as! UITabBarController
-                    tabBarController.setViewControllers([movieListVC], animated: false)
-                    let navigationController = UINavigationController.init(rootViewController: tabBarController)
-                    
-                    self.present(navigationController, animated: true)
-                }
-                    
+            let id = (result["id"] as! NSString) as String
+            if id == "NULL"{
+                self.label.text = "아이디 혹은 비밀번호가 틀렸습니다."
+                self.label.textColor = UIColor.red
+                self.label.textAlignment = .center
+            }else{
+                //자동로그인 정보 저장 - UserDefaults 파일
+                let userDefaults = UserDefaults.standard
+                userDefaults.set(id, forKey: "id")
+                let nickname = (result["nickname"] as! NSString) as String
+                userDefaults.set(nickname, forKey: "nickname")
+                let image =
+                    (result["image"] as! NSString) as String
+                userDefaults.set(image, forKey: "profilePhoto")
+                
+                let movieListVC = self.storyboard?.instantiateViewController(withIdentifier: "MovieListViewController") as! MovieListViewController
+                let profileViewController = self.storyboard?.instantiateViewController(withIdentifier: "ProfileViewController") as! ProfileViewController
+                let tabBarController = self.storyboard?.instantiateViewController(withIdentifier: "tabbarController") as! UITabBarController
+                tabBarController.setViewControllers([movieListVC, profileViewController], animated: false)
+                let navigationController = UINavigationController.init(rootViewController: tabBarController)
+                
+                self.present(navigationController, animated: true)
             }
+            
         }
     }
-    
 
     @IBAction func register(_ sender: Any) {
         let registerViewController = self.storyboard?.instantiateViewController(withIdentifier: "RegisterViewController") as! RegisterViewController
@@ -97,9 +101,7 @@ class ViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         //화면 생성시 로그인 확인
-        if appDelegate.id == nil {
-            btnlogin.setTitle("로그인", for: .normal)
-        }else{
+        if UserDefaults.standard.string(forKey: "id") != nil {
             self.dismiss(animated: false)
         }
     }

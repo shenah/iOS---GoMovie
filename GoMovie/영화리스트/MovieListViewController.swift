@@ -50,7 +50,9 @@ class MovieListViewController: UIViewController {
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>.init(entityName: "Movies")
         //조건 설정
         fetchRequest.predicate = NSPredicate(format: "status==%@", status)
-        
+        //정렬
+        let releaseDateDesc = NSSortDescriptor(key: "releaseDate", ascending: false)
+        fetchRequest.sortDescriptors = [releaseDateDesc]
         do {
             let result = try context.fetch(fetchRequest)
             return result as! [NSManagedObject]
@@ -64,25 +66,18 @@ class MovieListViewController: UIViewController {
         //context 가져오기
         let context = self.appDelegate.persistentContainer.viewContext
         //데이터 삽입하는 객체
-        let newData = NSEntityDescription.insertNewObject(forEntityName: "Movies", into: context)
+        let newData = NSEntityDescription.insertNewObject(forEntityName: "Movies", into: context) as! MoviesMO
         //데이터 넣기
-        let movieId = movieDic["id"] as! Int32
-        let voteAverage = movieDic["vote_average"] as! Double
-        let title = (movieDic["title"] as! NSString) as String
+        newData.movieId = movieDic["id"] as! Int32
+        newData.voteAverage = movieDic["vote_average"] as! Double
+        newData.title = (movieDic["title"] as! NSString) as String
 
-        let releaseDate = (movieDic["release_date"] as! NSString) as String
-        let status = status
+        newData.releaseDate = (movieDic["release_date"] as! NSString) as String
+        newData.status = status
         // 이미지를 Data 타입으로 저장
         let posterPath = (movieDic["poster_path"] as! NSString) as String
         let url = URL(string: "https://image.tmdb.org/t/p/w500\(posterPath)")
-        let posterData = try! Data(contentsOf: url!)
-        
-        newData.setValue(movieId, forKey: "movieId")
-        newData.setValue(voteAverage, forKey: "voteAverage")
-        newData.setValue(title, forKey: "title")
-        newData.setValue(releaseDate, forKey: "releaseDate")
-        newData.setValue(status, forKey: "status")
-        newData.setValue(posterData, forKey: "posterData")
+        newData.posterData = try! Data(contentsOf: url!)
         
         do{
             try context.save()
@@ -125,7 +120,8 @@ class MovieListViewController: UIViewController {
         //데이터 다운로드 - 인터넷 사용 가능할 때
         self.download("now_playing")
         self.download("upcoming")
-
+        
+        coreList = getMoviesWith(param)
         self.tabBarController?.title = "현재 상영중"
         
         tableView.delegate = self
@@ -174,9 +170,11 @@ extension MovieListViewController : UITableViewDelegate, UITableViewDataSource{
         let detailViewController = self.storyboard?.instantiateViewController(withIdentifier: "DetailViewController") as! DetailViewController
         //선택한 movieId 찾아오기
         let movieData = self.coreList[indexPath.row]
-        
-        detailViewController.movieVO.movieId = movieData.value(forKey: "movieId") as? Int
-        detailViewController.movieVO.posterData = movieData.value(forKey: "posterData") as? Data
+        let movieId = movieData.value(forKey: "movieId") as? Int
+        let posterData = movieData.value(forKey: "posterData") as? Data
+        detailViewController.movie = ["movieId": movieId!]
+        detailViewController.movie = ["posterData": posterData!]
+
         //print(detailViewController.linkUrl)
         self.navigationController?.pushViewController(detailViewController, animated: true)
     }

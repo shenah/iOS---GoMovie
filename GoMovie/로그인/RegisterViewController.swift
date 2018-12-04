@@ -18,10 +18,12 @@ class RegisterViewController: UIViewController {
     @IBOutlet weak var pwConTF: UITextField!
     @IBOutlet weak var regbtn: UIButton!
     @IBOutlet weak var cancelbtn: UIButton!
+    @IBOutlet weak var lblhint: UILabel!
     
     //선택한 이미지 파일의 URL과 이름을 저장하는 변수
     var imageURL : URL!
     
+    //프로필 사진 선택 버튼 이벤트
     @IBAction func pickImg(_ sender: Any) {
         //대화상자 생성
         let select = UIAlertController(title:"이미지를 가져올 곳을 선택하세요!", message:nil, preferredStyle:.actionSheet)
@@ -38,7 +40,9 @@ class RegisterViewController: UIViewController {
         self.present(select, animated:true)
 
     }
+    //회원가입 정보 유효성 검사
     
+    //회원가입 버튼 이벤트
     @IBAction func signUp(_ sender: Any) {
         //파라이터 가져오기
         let id = idTF.text!
@@ -46,33 +50,54 @@ class RegisterViewController: UIViewController {
         let pw = pwTF.text!
         let pwCon = pwConTF.text!
 
-        guard id.count != 0 else{
+        guard let i = idTF.text, let n = nicknameTF.text, let p = pwTF.text, let pcon = pwConTF.text else{
+            lblhint.text = "회원정보를 모두 입력하세요!"
+            lblhint.textColor = UIColor.red
             return
         }
+        let dirPaths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)
+        let docDir = dirPaths[0]
+        let filePath = docDir
         
         let parameters = ["id" : id,
                           "nickname" : nickname,
                           "pw" : pw]
-        
+        //Alamofire로 회원가입 요청
         Alamofire.upload(multipartFormData: {multipartFormData in
-            multipartFormData.append(self.imageURL, withName: "image")
+            if let url = self.imageURL{
+                multipartFormData.append(self.imageURL, withName: "image")
+            }
             for p in parameters{
                 multipartFormData.append((p.value.data(using: String.Encoding.utf8))!, withName: p.key)
             }
         }, to: "http://192.168.0.113:8080/MobileServer/member/register", method: .post, encodingCompletion: {encodingResult in
+        
             switch encodingResult {
         case .success(let upload, _, _):
-            upload.response(completionHandler: { (response) in
-                print(response.data!)
+            upload.responseJSON(completionHandler: { json in
+                
+                let dic = json.result.value as! NSDictionary
+                if dic["register"] != nil{
+                    //회원가입 성공한 후 로그인 화면으로 이동
+                    let alert = UIAlertController(title: "회원가입 성공하셨습니다!", message: "", preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: "확인", style: .cancel, handler:{(action) in
+                        self.presentingViewController?.dismiss(animated: true)
+                    }))
+                    self.present(alert, animated: true)
+                }else{
+                    self.lblhint.text = "회원가입 실패!"
+                    self.lblhint.textColor = UIColor.red
+                }
+                
             })
-            
         case .failure(let encodingError):
-            print("error:\(encodingError)")
+            print("업로드 실패error:\(encodingError)")
             }
         })
 
     }
     
+    //취소 버튼 이벤트
     @IBAction func cancel(_ sender: Any) {
         self.dismiss(animated: true)
     }
@@ -103,15 +128,13 @@ class RegisterViewController: UIViewController {
         profilePhoto.layer.masksToBounds = true
 
         idTF.placeholder = "아이디"
-        nicknameTF.placeholder = "닉넴"
+        nicknameTF.placeholder = "닉네임"
         pwTF.placeholder = "비밀번호"
         pwConTF.placeholder = "비밀번호 확인"
         regbtn.layer.cornerRadius = 5
         cancelbtn.layer.cornerRadius = 5
         
-        
     }
-    
 
 }
 extension RegisterViewController : UIImagePickerControllerDelegate, UINavigationControllerDelegate{
@@ -119,8 +142,16 @@ extension RegisterViewController : UIImagePickerControllerDelegate, UINavigation
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]){
         self.profilePhoto.image =
             info[UIImagePickerController.InfoKey.editedImage] as? UIImage
+//        let dirPaths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)
+//        let docDir = dirPaths[0]
+//        let filePath = docDir + "/profile.png"
+//        let fileMgr = FileManager.default
+//        let imgdata = profilePhoto.image?.pngData()
+//        fileMgr.createFile(atPath: filePath, contents: imgdata, attributes: nil)
+//        print(filePath)
+
         imageURL = info[UIImagePickerController.InfoKey.imageURL] as! URL
-        print(imageURL)
+        //print(imageURL)
         picker.dismiss(animated:false)
     }
 

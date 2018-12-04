@@ -14,12 +14,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var navi : UINavigationController?
     var displayMapViewController : DisplayMapViewController?
-    var window: UIWindow?
+    var detailViewController : DetailViewController?
     
-    var id : String!
-    var nickname : String!
-    var image : String!
-
+    var window: UIWindow?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
