@@ -19,6 +19,7 @@ class ViewController: UIViewController {
     
     @IBOutlet weak var btnlogin: UIButton!
     @IBOutlet weak var btnreg: UIButton!
+    @IBOutlet weak var btnskip: UIButton!
     
     @IBOutlet weak var label: UILabel!
     //AppDelegate 객체에 대한 참조 변수
@@ -102,7 +103,7 @@ class ViewController: UIViewController {
         super.viewWillAppear(animated)
         //화면 생성시 로그인 확인
         if UserDefaults.standard.string(forKey: "id") != nil {
-            self.dismiss(animated: false)
+            self.skip(btnskip)
         }
     }
 

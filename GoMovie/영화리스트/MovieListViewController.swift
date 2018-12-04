@@ -116,16 +116,18 @@ class MovieListViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         //데이터 다운로드 - 인터넷 사용 가능할 때
         self.download("now_playing")
         self.download("upcoming")
-        
         coreList = getMoviesWith(param)
         self.tabBarController?.title = "현재 상영중"
         
         tableView.delegate = self
         tableView.dataSource = self
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        
     }
 
 }
@@ -170,10 +172,10 @@ extension MovieListViewController : UITableViewDelegate, UITableViewDataSource{
         let detailViewController = self.storyboard?.instantiateViewController(withIdentifier: "DetailViewController") as! DetailViewController
         //선택한 movieId 찾아오기
         let movieData = self.coreList[indexPath.row]
-        let movieId = movieData.value(forKey: "movieId") as? Int
-        let posterData = movieData.value(forKey: "posterData") as? Data
-        detailViewController.movie = ["movieId": movieId!]
-        detailViewController.movie = ["posterData": posterData!]
+        let movieId = movieData.value(forKey: "movieId") as! Int
+        let posterData = movieData.value(forKey: "posterData") as! Data
+        detailViewController.movie.append(["movieId": movieId])
+        detailViewController.movie.append(["posterData": posterData])
 
         //print(detailViewController.linkUrl)
         self.navigationController?.pushViewController(detailViewController, animated: true)

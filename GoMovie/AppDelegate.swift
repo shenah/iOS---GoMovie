@@ -12,8 +12,6 @@ import CoreData
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
-    var navi : UINavigationController?
-    var displayMapViewController : DisplayMapViewController?
     var detailViewController : DetailViewController?
     
     var window: UIWindow?

@@ -77,6 +77,7 @@
                     <connections>
                         <outlet property="btnlogin" destination="tsk-D4-S3e" id="m1w-Wn-EDQ"/>
                         <outlet property="btnreg" destination="Hcf-KS-XEM" id="8nU-BO-kVH"/>
+                        <outlet property="btnskip" destination="EyD-rT-4re" id="piA-7R-2Ix"/>
                         <outlet property="idtxt" destination="Voh-la-wnm" id="7dc-3c-IE0"/>
                         <outlet property="label" destination="uHm-EE-Leb" id="jAg-23-vW3"/>
                         <outlet property="pwtxt" destination="AzY-l9-aod" id="pDI-56-VXH"/>
@@ -233,24 +234,32 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qFs-Jt-Zb4">
-                                <rect key="frame" x="0.0" y="88" width="414" height="380"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Il2-zF-cKP">
-                                <rect key="frame" x="144" y="293" width="127" height="127"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Il2-zF-cKP">
+                                <rect key="frame" x="144" y="321" width="127" height="127"/>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1CL-8u-txS">
                                 <rect key="frame" x="158" y="476" width="98" height="48"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Button"/>
                             </button>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qFs-Jt-Zb4">
+                                <rect key="frame" x="0.0" y="88" width="414" height="380"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="Il2-zF-cKP" firstAttribute="top" secondItem="i8X-CA-QQn" secondAttribute="top" constant="233" id="BFF-yW-kRF"/>
+                            <constraint firstItem="i8X-CA-QQn" firstAttribute="trailing" secondItem="Il2-zF-cKP" secondAttribute="trailing" constant="143" id="Elo-Id-CjW"/>
+                            <constraint firstItem="i8X-CA-QQn" firstAttribute="bottom" secondItem="Il2-zF-cKP" secondAttribute="bottom" constant="365" id="V5l-1n-U7b"/>
+                            <constraint firstItem="Il2-zF-cKP" firstAttribute="leading" secondItem="i8X-CA-QQn" secondAttribute="leading" constant="144" id="xfI-3S-RtX"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="i8X-CA-QQn"/>
                     </view>
                     <tabBarItem key="tabBarItem" title="Item" id="vz8-YE-JZh"/>
+                    <connections>
+                        <outlet property="profileimg" destination="Il2-zF-cKP" id="e7y-ma-V4E"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vgy-x6-kzh" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

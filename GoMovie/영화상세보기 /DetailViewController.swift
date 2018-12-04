@@ -9,9 +9,11 @@
 import UIKit
 import Alamofire
 class DetailViewController: UIViewController {
+
+    let appDelegate = UIApplication.shared.delegate as! AppDelegate
     
     //영화 상세정보 객체
-    var movie = [String: Any]()
+    var movie = [Dictionary<String, Any>]()
     
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var backdropImg: UIImageView!
@@ -29,17 +31,13 @@ class DetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        
-        //DetailHeadView에서 버튼 동작할 수 있게 컨트롤러 저장
-        appDelegate.navi = self.navigationController
-        appDelegate.displayMapViewController = self.storyboard?.instantiateViewController(withIdentifier: "DisplayMapViewController") as! DisplayMapViewController
+        //DetailViewController을 DetailHeaderView에서 사용 가능하도록 버튼 AppDelegate에 저장
         appDelegate.detailViewController = self
         
         //테이블의 HeadView 설정
         let detailHeadView = DetailHeadView.showInTableView(tableView: tableView, movie: movie) as! DetailHeadView
         tableView.tableHeaderView = detailHeadView
-        self.title = detailHeadView.lblTitle.text
+        
         tableView.delegate = self
     }
 
