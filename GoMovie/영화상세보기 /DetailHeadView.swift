@@ -17,13 +17,13 @@ class DetailHeadView: UIView {
     @IBOutlet weak var lblVoteAverage: UILabel!
     @IBOutlet weak var lblVoteCount: UILabel!
     @IBOutlet weak var lblOverview: UILabel!
+    @IBOutlet weak var lblcount: UILabel!
     @IBOutlet weak var subview: UIView!
     
-    //detailviewcontroller의 tableview를 저장할 변수
-    var tableView : UITableView?
-    var movie : [Dictionary<String, Any>]?
     
-    let appDelegate = UIApplication.shared.delegate as! AppDelegate
+    //detailviewcontroller를 저장할 변수와 상위 뷰 컨트롤에서 넘겨준 데이터
+    var detailViewController : UIViewController?
+    var movie : [Dictionary<String, Any>]?
     
     //댓글 쓰기
     @IBAction func writReview(_ sender: Any) {
@@ -34,47 +34,45 @@ class DetailHeadView: UIView {
             let alert = UIAlertController(title: "댓글을 남기려면 로그인 해야 합니다.", message: "", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "로그인", style: .default, handler: {(action) in
                 //로그인 뷰 컨트롤러 가져오기
-                let viewController = self.appDelegate.detailViewController?.storyboard?.instantiateViewController(withIdentifier: "ViewController") as! ViewController
-                self.appDelegate.detailViewController?.present(viewController, animated: true)
+                let viewController = self.detailViewController?.storyboard?.instantiateViewController(withIdentifier: "ViewController") as! ViewController
+                self.detailViewController?.present(viewController, animated: true)
             }))
             alert.addAction(UIAlertAction(title: "취소", style: .cancel))
+            detailViewController?.present(alert, animated: true)
             
         }else{
             //대화상자에 삽입할 뷰 컨트롤러 만들기
             let contentVC = UIViewController()
             //contentVC 사이즈 설정
-            contentVC.preferredContentSize = CGSize(width: 310, height: 200)
-            //textview 생성
+            
+            //댓글 달기 위한 textView
             let textView = UITextView()
-            textView.frame = CGRect(x: 5, y: 0, width: contentVC.preferredContentSize.width -  5, height: 200)
+            textView.frame = CGRect(x: 0, y: 0, width: 310, height: 200)
             textView.layer.borderWidth = 1
-            textView.layer.borderColor = UIColor.black.withAlphaComponent(0.6).cgColor
+            textView.layer.borderColor = UIColor.clear.cgColor
+            textView.backgroundColor = UIColor.lightGray.withAlphaComponent(0.3)
+            contentVC.preferredContentSize = CGSize(width: textView.frame.width, height: textView.frame.height)
             //텍스트 뷰 삽입
             contentVC.view.addSubview(textView)
            
-            
-            
             //parameter
             let memberId = UserDefaults.standard.string(forKey: "id")!
             let movieId = movie![0]["movieId"] as! Int
             let movieTitle = lblTitle.text!
-            let content = textView.text!
+            
             
             //대화상자 만들기 
             let alert = UIAlertController(title: "댓글을 작성하세요!", message: "", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "확인", style: .default, handler: {(action) in
-//                guard content.isEmpty == false else{
-//                    let alert = UIAlertController(title: "텍스트 뷰에 내용을 작성해야 합니다.", message: "", preferredStyle: .alert)
-//                    alert.addAction(UIAlertAction(title: "확인", style: .default))
-//
-//
-//                    self.present(alert, animated: true)
-//
-//                }
+                guard textView.text.isEmpty == false else{
+                    self.showToast(message: "댓글 추가 실패! 내용을 입력하세요!")
+                    return
+                }
                 
                 let url = "http://192.168.0.113:8080/MobileServer/reviews/addreview"
-                Alamofire.request(url, method: .post, parameters: ["memberId": memberId, "movieId": movieId, "movieTitle": movieTitle, "content": content] , encoding: URLEncoding.default, headers: nil).responseJSON(completionHandler: {(json) in
-                    print(json)
+                let request = Alamofire.request(url, method: .post, parameters: ["memberId": memberId, "movieId": movieId, "movieTitle": movieTitle, "content": textView.text!] , encoding: URLEncoding.default, headers: nil)
+                request.responseJSON(completionHandler: {(json) in
+                    print(textView.text)
                     let result = json.result.value as! NSDictionary
                     if result["addreview"] != nil  {
                         self.showToast(message: "댓글 추가 성공!")
@@ -86,7 +84,7 @@ class DetailHeadView: UIView {
             
             //대화상자에 삽입
             alert.setValue(contentVC, forKey: "contentViewController")
-            appDelegate.detailViewController?.present(alert, animated: true)
+            detailViewController?.present(alert, animated: true)
         }
         
     }
@@ -95,22 +93,23 @@ class DetailHeadView: UIView {
     @IBAction func theaterMove(_ sender: Any) {
         
         //지도 - DisplayMapViewController 가져오기
-        let displayMapViewController = appDelegate.detailViewController?.storyboard?.instantiateViewController(withIdentifier: "DisplayMapViewController")
+        let displayMapViewController = detailViewController?.storyboard?.instantiateViewController(withIdentifier: "DisplayMapViewController")
         
         //비동기적으로 푸시
         DispatchQueue.main.async {
-            self.appDelegate.detailViewController?.navigationController?.pushViewController(displayMapViewController!, animated: true)
+            self.detailViewController?.navigationController?.pushViewController(displayMapViewController!, animated: true)
         }
     }
     
-    static func showInTableView(tableView : UITableView, movie: [Dictionary<String, Any>]) -> DetailHeadView{
+    static func showInTableView(detailViewController : UIViewController, movie: [Dictionary<String, Any>]) -> DetailHeadView{
         let detailHeadView = Bundle.main.loadNibNamed("DetailHeadView", owner: nil, options: nil)?[0] as! DetailHeadView
-        detailHeadView.dataLoading(tableView: tableView, movie: movie)
+        detailHeadView.dataLoading(detailViewController : detailViewController, movie: movie)
         return detailHeadView
     }
     
-    func dataLoading(tableView : UITableView, movie : [Dictionary<String, Any>]){
-        self.tableView = tableView
+    //데이터 가져오기
+    func dataLoading(detailViewController : UIViewController, movie : [Dictionary<String, Any>]){
+        self.detailViewController = detailViewController
         self.movie = movie
         let url = "https://api.themoviedb.org/3/movie/\(movie[0]["movieId"]!)?api_key=0d18b9a2449f2b69a2489e88dd795d91&language=ko-KR"
         let request = Alamofire.request(url, method: .get, parameters: nil, encoding: URLEncoding.default, headers: nil)
@@ -135,7 +134,7 @@ class DetailHeadView: UIView {
                 self.lblVoteAverage.text = "\(jsonObject["vote_average"] as! Double)"
                 self.lblVoteCount.text = "\(jsonObject["vote_count"] as! Int)명"
                 self.lblOverview.text = (jsonObject["overview"] as! NSString) as String
-                
+                //self.lblcount.text = movie[2]["count"] as! String
             case .failure(let error):
                 print(error)
             }
@@ -145,13 +144,14 @@ class DetailHeadView: UIView {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        frame.size.height = subview.frame.size.height
+        self.frame.size.height = subview.frame.size.height
+        self.lblOverview.sizeToFit()
     }
     
     
     func showToast(message : String) {
         
-        let toastLabel = UILabel(frame: CGRect(x:appDelegate.detailViewController!.view.frame.size.width/2 - 75, y: appDelegate.detailViewController!.view.frame.size.height-100, width: 150, height: 35))
+        let toastLabel = UILabel(frame: CGRect(x: detailViewController!.view.frame.size.width/2 - 75, y: detailViewController!.view.frame.size.height-100, width: 150, height: 35))
         toastLabel.backgroundColor = UIColor.black.withAlphaComponent(0.6)
         toastLabel.textColor = UIColor.white
         toastLabel.textAlignment = .center;
@@ -160,7 +160,7 @@ class DetailHeadView: UIView {
         toastLabel.alpha = 1.0
         toastLabel.layer.cornerRadius = 10;
         toastLabel.clipsToBounds  =  true
-        appDelegate.detailViewController!.view.addSubview(toastLabel)
+        detailViewController!.view.addSubview(toastLabel)
         UIView.animate(withDuration: 3.0, delay: 0.1, options: .curveEaseOut, animations: {
             toastLabel.alpha = 0.0
         }, completion: {(isCompleted) in
@@ -169,3 +169,4 @@ class DetailHeadView: UIView {
     }
 
 }
+

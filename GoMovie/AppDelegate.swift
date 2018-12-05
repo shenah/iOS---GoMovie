@@ -11,8 +11,6 @@ import CoreData
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
-
-    var detailViewController : DetailViewController?
     
     var window: UIWindow?
 

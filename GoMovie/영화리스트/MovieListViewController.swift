@@ -90,8 +90,8 @@ class MovieListViewController: UIViewController {
     func download(_ status : String){
         //데이터 요청 url
         let url = "https://api.themoviedb.org/3/movie/\(status)?api_key=0d18b9a2449f2b69a2489e88dd795d91&language=ko-KR&region=KR"
+        
         //서버에서 영화 목록 데이터 가져오기 - 인터넷 사용가능 할 때
-        print(url)
         let request = Alamofire.request(url, method: .get, parameters: nil, encoding: URLEncoding.default , headers: nil)
         request.responseJSON(completionHandler: {
             response in

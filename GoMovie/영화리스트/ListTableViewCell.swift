@@ -16,9 +16,6 @@ class ListTableViewCell: UITableViewCell {
     @IBOutlet weak var releaseDate: UILabel!
     @IBOutlet weak var poster: UIImageView!
     
-
-    
-    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

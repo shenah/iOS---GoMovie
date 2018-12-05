@@ -53,7 +53,7 @@ class ViewController: UIViewController {
         //결과
         request.responseJSON{
             response in
-            //print(response.result.value!)
+            print(response)
             let jsonObject = response.result.value as! [String:Any]
             print(jsonObject)
             let result = jsonObject["member"] as! NSDictionary
@@ -72,14 +72,8 @@ class ViewController: UIViewController {
                 let image =
                     (result["image"] as! NSString) as String
                 userDefaults.set(image, forKey: "profilePhoto")
-                
-                let movieListVC = self.storyboard?.instantiateViewController(withIdentifier: "MovieListViewController") as! MovieListViewController
-                let profileViewController = self.storyboard?.instantiateViewController(withIdentifier: "ProfileViewController") as! ProfileViewController
-                let tabBarController = self.storyboard?.instantiateViewController(withIdentifier: "tabbarController") as! UITabBarController
-                tabBarController.setViewControllers([movieListVC, profileViewController], animated: false)
-                let navigationController = UINavigationController.init(rootViewController: tabBarController)
-                
-                self.present(navigationController, animated: true)
+                //페이지 이동
+                self.skip(self.btnskip)
             }
             
         }
