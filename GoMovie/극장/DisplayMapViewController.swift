@@ -28,7 +28,7 @@ class DisplayMapViewController: UIViewController, CLLocationManagerDelegate {
     }
     
 }
-extension ViewController : MKMapViewDelegate{
+extension DisplayMapViewController : MKMapViewDelegate{
     //사용자의 위치가 변경되는 경우 호출되는 메소드
     func mapView(_ mapView: MKMapView, didUpdate userLocation: MKUserLocation) {
         mapView.centerCoordinate = userLocation.location!.coordinate

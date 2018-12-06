@@ -21,53 +21,56 @@ class DetailViewController: UIViewController {
 
     //댓글 가져오기
     func getReviews(movieId : Int){
-         print("start getreviews")
+        
         let request = Alamofire.request("http://192.168.0.113:8080/MobileServer/reviews/reviewlist?movieId=\(movieId)")
-        request.responseJSON(completionHandler: {(json) in
-            let dic = json.result.value as! NSDictionary
-            let count = dic["count"] as! Int
-            //self.movie.append(["count" : count])
-            self.detailHeadView.lblcount.text = "\(count)개"
-            let reviews = dic["reviews"] as! NSArray
-            for re in reviews{
-                let review = re as! NSDictionary
-                print(review)
-                var reviewVO : ReviewVO  = ReviewVO()
-                reviewVO.content = review["content"] as! String
-                reviewVO.dispdate = review["dispdate"] as! String
-                reviewVO.likecnt = review["likecnt"] as! Int
-                reviewVO.nickname = review["nickname"] as! String
-                reviewVO.rno = review["rno"] as! Int
-                print(review["image"] as! String)
-                if review["image"] as! String != "null"{
-                    
-                    let image = review["image"] as! String
-                    let url = URL(string: "http://192.168.0.113:8080/MobileServer/memberimage/\(image)")
-                    let imageData = try! Data(contentsOf: url!)
-                   reviewVO.image = UIImage(data: imageData)
-                }else{
-                    reviewVO.image = UIImage(named: "account.jpg")
+        request.responseJSON(completionHandler: {(response) in
+            switch response.result{
+            case.success:
+                let dic = response.result.value as! NSDictionary
+                let count = dic["count"] as! Int
+                //self.movie.append(["count" : count])
+                self.detailHeadView.lblcount.text = "\(count)개"
+                let reviews = dic["reviews"] as! NSArray
+                for re in reviews{
+                    let review = re as! NSDictionary
+                    print(review)
+                    let reviewVO : ReviewVO  = ReviewVO()
+                    reviewVO.content = review["content"] as? String
+                    reviewVO.dispdate = review["dispdate"] as? String
+                    reviewVO.likecnt = review["likecnt"] as? Int
+                    reviewVO.nickname = review["nickname"] as? String
+                    reviewVO.rno = review["rno"] as? Int
+                    print(review["image"] as! String)
+                    if review["image"] as! String != "null"{
+                        
+                        let image = review["image"] as! String
+                        let url = URL(string: "http://192.168.0.113:8080/MobileServer/memberimage/\(image)")
+                        let imageData = try! Data(contentsOf: url!)
+                        reviewVO.image = UIImage(data: imageData)
+                    }else{
+                        reviewVO.image = UIImage(named: "account.jpg")
+                    }
+                    self.reviewlist.append(reviewVO)
                 }
-                self.reviewlist.append(reviewVO)
+                self.tableView.reloadData()
+                break
+            case.failure(let error):
+                print("댓글 요청실패:\(error)")
+                break
             }
-            self.tableView.reloadData()
         })
-        print("end getreviews")
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("viewdidload")
-        //테이블의 HeadView 설정
-        
+        getReviews(movieId: movie[0]["movieId"] as! Int)
         tableView.delegate = self
         tableView.dataSource = self
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        print("viewdidappear")
-        getReviews(movieId: movie[0]["movieId"] as! Int)
         
+    
         let detailHeadView = DetailHeadView.showInTableView(detailViewController: self, movie: movie)
         self.detailHeadView = detailHeadView
         tableView.tableHeaderView = detailHeadView
@@ -77,12 +80,11 @@ class DetailViewController: UIViewController {
 }
 extension DetailViewController : UITableViewDelegate, UITableViewDataSource{
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        print("numberofrows")
         return reviewlist.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        print("cell")
+
         let cell = tableView.dequeueReusableCell(withIdentifier: "ReviewCell", for: indexPath) as! ReviewCell
         let review = reviewlist[indexPath.row]
         cell.photo.image = review.image
@@ -96,7 +98,6 @@ extension DetailViewController : UITableViewDelegate, UITableViewDataSource{
         cell.content.text = review.content!
         cell.content.sizeToFit()
         cell.dispdate.text = review.dispdate!
-        
         
         return cell
     }
