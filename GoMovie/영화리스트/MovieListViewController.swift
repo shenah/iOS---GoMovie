@@ -74,10 +74,17 @@ class MovieListViewController: UIViewController {
 
         newData.releaseDate = (movieDic["release_date"] as! NSString) as String
         newData.status = status
+        
         // 이미지를 Data 타입으로 저장
-        let posterPath = (movieDic["poster_path"] as! NSString) as String
-        let url = URL(string: "https://image.tmdb.org/t/p/w500\(posterPath)")
-        newData.posterData = try! Data(contentsOf: url!)
+        if (movieDic["poster_path"] as? NSString) != nil{
+            let posterPath = (movieDic["poster_path"] as! NSString) as String
+            let url = URL(string: "https://image.tmdb.org/t/p/w500\(posterPath)")
+            newData.posterData = try! Data(contentsOf: url!)
+        }else{
+            let noposter = UIImage(named: "noposter.png")
+            newData.posterData = noposter?.pngData()
+        }
+        
         
         do{
             try context.save()
@@ -95,21 +102,26 @@ class MovieListViewController: UIViewController {
         let request = Alamofire.request(url, method: .get, parameters: nil, encoding: URLEncoding.default , headers: nil)
         request.responseJSON(completionHandler: {
             response in
-            //json데이터 파싱
-            //데이터가 있다면
-            if let jsonObject = response.result.value as? NSDictionary{
-                //results 키 가져오기
-                let movies = jsonObject["results"] as! [NSDictionary]
-                print("movies:\(movies.count)")
-                //total 페이지 가져오기
-                let totalPages = jsonObject["total_pages"] as! Int
-                //coredata에 저장
-                for movieDic in movies{
-                    self.save(movieDic, status)
+            switch response.result{
+            case.success:
+                //json데이터 파싱
+                //데이터가 있다면
+                if let jsonObject = response.result.value as? NSDictionary{
+                    //results 키 가져오기
+                    let movies = jsonObject["results"] as! [NSDictionary]
+                    print("movies:\(movies.count)")
+                    //total 페이지 가져오기
+                    let totalPages = jsonObject["total_pages"] as! Int
+                    //coredata에 저장
+                    for movieDic in movies{
+                        self.save(movieDic, status)
+                    }
+                    self.tableView.reloadData()
+                }else{
+                    print("데이터 없음")
                 }
-                self.tableView.reloadData()
-            }else{
-                print("데이터 없음")
+            case.failure(let error):
+                print("데이터 가져오기 실패:\(error)")
             }
         })
     }

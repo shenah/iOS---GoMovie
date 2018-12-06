@@ -73,9 +73,8 @@ class RegisterViewController: UIViewController {
         }, to: "http://192.168.0.113:8080/MobileServer/member/register", method: .post, encodingCompletion: {encodingResult in
         
             switch encodingResult {
-        case .success(let upload, _, _):
-            upload.responseJSON(completionHandler: { json in
-                
+        case .success(let uploadRequest, _, _):
+            uploadRequest.responseJSON(completionHandler: { json in
                 let dic = json.result.value as! NSDictionary
                 if dic["register"] != nil{
                     //회원가입 성공한 후 로그인 화면으로 이동
@@ -90,8 +89,8 @@ class RegisterViewController: UIViewController {
                 }
                 
             })
-        case .failure(let encodingError):
-            print("업로드 실패error:\(encodingError)")
+        case .failure(let error):
+            print("회원가입 실패:\(error)")
             }
         })
 

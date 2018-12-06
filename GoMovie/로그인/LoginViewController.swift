@@ -1,19 +1,16 @@
 //
-//  ViewController.swift
+//  LoginViewController.swift
 //  GoMovie
 //
-//  Created by 503-03 on 21/11/2018.
+//  Created by 503-03 on 06/12/2018.
 //  Copyright © 2018 shenah. All rights reserved.
 //
 
 import UIKit
 //Alamofire는 URL 통신을 쉽게 할 수 있도록 해주는 외부 라이브러리 ﻿
 import Alamofire
+class LoginViewController: UIViewController {
 
-class ViewController: UIViewController {
-
-    
- 
     @IBOutlet weak var idtxt: UITextField!
     @IBOutlet weak var pwtxt: UITextField!
     
@@ -37,10 +34,10 @@ class ViewController: UIViewController {
             
             self.present(navigationController, animated: true)
         }
-
+        
     }
     @IBAction func login(_ sender: Any) {
-        guard let i = idtxt.text, let p = pwtxt.text else{
+        guard idtxt.text != nil, pwtxt.text != nil else{
             self.label.text = "아이디와 비밀번호를 입력하세요!"
             return
         }
@@ -54,31 +51,36 @@ class ViewController: UIViewController {
         request.responseJSON{
             response in
             print(response)
-            let jsonObject = response.result.value as! [String:Any]
-            print(jsonObject)
-            let result = jsonObject["member"] as! NSDictionary
-            
-            let id = (result["id"] as! NSString) as String
-            if id == "NULL"{
-                self.label.text = "아이디 혹은 비밀번호가 틀렸습니다."
-                self.label.textColor = UIColor.red
-                self.label.textAlignment = .center
-            }else{
-                //자동로그인 정보 저장 - UserDefaults 파일
-                let userDefaults = UserDefaults.standard
-                userDefaults.set(id, forKey: "id")
-                let nickname = (result["nickname"] as! NSString) as String
-                userDefaults.set(nickname, forKey: "nickname")
-                let image =
-                    (result["image"] as! NSString) as String
-                userDefaults.set(image, forKey: "profilePhoto")
-                //페이지 이동
-                self.skip(self.btnskip)
+            switch response.result{
+            case .success:
+                let jsonObject = response.result.value as! [String:Any]
+                print(jsonObject)
+                let result = jsonObject["member"] as! NSDictionary
+                
+                let id = (result["id"] as! NSString) as String
+                if id == "NULL"{
+                    self.label.text = "아이디 혹은 비밀번호가 틀렸습니다."
+                    self.label.textColor = UIColor.red
+                    self.label.textAlignment = .center
+                }else{
+                    //자동로그인 정보 저장 - UserDefaults 파일
+                    let userDefaults = UserDefaults.standard
+                    userDefaults.set(id, forKey: "id")
+                    let nickname = (result["nickname"] as! NSString) as String
+                    userDefaults.set(nickname, forKey: "nickname")
+                    let image =
+                        (result["image"] as! NSString) as String
+                    userDefaults.set(image, forKey: "profilePhoto")
+                    //페이지 이동
+                    self.skip(self.btnskip)
+                }
+            case .failure(let error):
+                print("로그인 실패:\(error)")
+                
             }
-            
         }
     }
-
+    
     @IBAction func register(_ sender: Any) {
         let registerViewController = self.storyboard?.instantiateViewController(withIdentifier: "RegisterViewController") as! RegisterViewController
         self.present(registerViewController, animated: true)
@@ -91,7 +93,7 @@ class ViewController: UIViewController {
         pwtxt.placeholder = "비밀번호"
         btnlogin.layer.cornerRadius = 5
         btnreg.layer.cornerRadius = 5
-       
+        
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -101,6 +103,4 @@ class ViewController: UIViewController {
         }
     }
 
-
 }
-

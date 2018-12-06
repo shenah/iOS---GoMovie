@@ -34,8 +34,8 @@ class DetailHeadView: UIView {
             let alert = UIAlertController(title: "댓글을 남기려면 로그인 해야 합니다.", message: "", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "로그인", style: .default, handler: {(action) in
                 //로그인 뷰 컨트롤러 가져오기
-                let viewController = self.detailViewController?.storyboard?.instantiateViewController(withIdentifier: "ViewController") as! ViewController
-                self.detailViewController?.present(viewController, animated: true)
+                let loginViewController = self.detailViewController?.storyboard?.instantiateViewController(withIdentifier: "LoginViewController") as! ViewController
+                self.detailViewController?.present(loginViewController, animated: true)
             }))
             alert.addAction(UIAlertAction(title: "취소", style: .cancel))
             detailViewController?.present(alert, animated: true)
@@ -70,12 +70,13 @@ class DetailHeadView: UIView {
                 }
                 
                 let url = "http://192.168.0.113:8080/MobileServer/reviews/addreview"
-                let request = Alamofire.request(url, method: .post, parameters: ["memberId": memberId, "movieId": movieId, "movieTitle": movieTitle, "content": textView.text!] , encoding: URLEncoding.default, headers: nil)
+                let request = Alamofire.request(url, method: .post, parameters: ["memberId": memberId, "movieId": movieId, "movieTitle": movieTitle, "content": textView.text as! String] , encoding: URLEncoding.default, headers: nil)
                 request.responseJSON(completionHandler: {(json) in
                     print(textView.text)
                     let result = json.result.value as! NSDictionary
                     if result["addreview"] != nil  {
                         self.showToast(message: "댓글 추가 성공!")
+                        
                     }else{
                         self.showToast(message: "댓글 추가 실패!")
                     }})
@@ -144,8 +145,9 @@ class DetailHeadView: UIView {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        self.frame.size.height = subview.frame.size.height
         self.lblOverview.sizeToFit()
+        self.frame.size.height = subview.frame.size.height
+       
     }
     
     
@@ -157,6 +159,7 @@ class DetailHeadView: UIView {
         toastLabel.textAlignment = .center;
         toastLabel.font = UIFont(name: "Montserrat-Light", size: 12.0)
         toastLabel.text = message
+        toastLabel.sizeToFit()
         toastLabel.alpha = 1.0
         toastLabel.layer.cornerRadius = 10;
         toastLabel.clipsToBounds  =  true

@@ -12,7 +12,6 @@
 		272BD9D121B1357000041B8B /* account@2x.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 272BD9D021B1357000041B8B /* account@2x.jpg */; };
 		27338F0421B79E2E00266BCC /* ReviewVO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27338F0321B79E2E00266BCC /* ReviewVO.swift */; };
 		2733C60421A4E83600B88FB0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2733C60321A4E83600B88FB0 /* AppDelegate.swift */; };
-		2733C60621A4E83600B88FB0 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2733C60521A4E83600B88FB0 /* ViewController.swift */; };
 		2733C60921A4E83700B88FB0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2733C60721A4E83700B88FB0 /* Main.storyboard */; };
 		2733C60C21A4E83700B88FB0 /* GoMovie.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 2733C60A21A4E83700B88FB0 /* GoMovie.xcdatamodeld */; };
 		2733C60E21A4E84300B88FB0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2733C60D21A4E84300B88FB0 /* Assets.xcassets */; };
@@ -22,6 +21,9 @@
 		276CD24521AE1F06001226C4 /* DisplayMapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 276CD24421AE1F06001226C4 /* DisplayMapViewController.swift */; };
 		2776E19321B5369400A80A45 /* ReviewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2776E19221B5369400A80A45 /* ReviewCell.swift */; };
 		2796EB8021B4C103001C1823 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2796EB7F21B4C103001C1823 /* ProfileViewController.swift */; };
+		27BB58BD21B8B8AA0057CB0C /* noposter.png in Resources */ = {isa = PBXBuildFile; fileRef = 27BB58BC21B8B8A90057CB0C /* noposter.png */; };
+		27BB58BF21B8D0EE0057CB0C /* MovieListDAO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27BB58BE21B8D0EE0057CB0C /* MovieListDAO.swift */; };
+		27BB58C121B8D11E0057CB0C /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27BB58C021B8D11E0057CB0C /* LoginViewController.swift */; };
 		27C99AF721A6CAA100D9E06B /* ListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27C99AF621A6CAA100D9E06B /* ListTableViewCell.swift */; };
 		27D256B521ABEDFF0036165C /* MovieListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27D256B421ABEDFF0036165C /* MovieListViewController.swift */; };
 		27D256B921ACDD2B0036165C /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27D256B821ACDD2B0036165C /* DetailViewController.swift */; };
@@ -38,7 +40,6 @@
 		27338F0321B79E2E00266BCC /* ReviewVO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewVO.swift; sourceTree = "<group>"; };
 		2733C60021A4E83600B88FB0 /* GoMovie.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GoMovie.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2733C60321A4E83600B88FB0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		2733C60521A4E83600B88FB0 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		2733C60821A4E83700B88FB0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		2733C60B21A4E83700B88FB0 /* GoMovie.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = GoMovie.xcdatamodel; sourceTree = "<group>"; };
 		2733C60D21A4E84300B88FB0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -49,6 +50,9 @@
 		276CD24421AE1F06001226C4 /* DisplayMapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayMapViewController.swift; sourceTree = "<group>"; };
 		2776E19221B5369400A80A45 /* ReviewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewCell.swift; sourceTree = "<group>"; };
 		2796EB7F21B4C103001C1823 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
+		27BB58BC21B8B8A90057CB0C /* noposter.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = noposter.png; sourceTree = "<group>"; };
+		27BB58BE21B8D0EE0057CB0C /* MovieListDAO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieListDAO.swift; sourceTree = "<group>"; };
+		27BB58C021B8D11E0057CB0C /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		27C99AF621A6CAA100D9E06B /* ListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListTableViewCell.swift; sourceTree = "<group>"; };
 		27D256B421ABEDFF0036165C /* MovieListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieListViewController.swift; sourceTree = "<group>"; };
 		27D256B821ACDD2B0036165C /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
@@ -96,7 +100,7 @@
 		2722015321AE61070003492D /* 로그인&회원가입 */ = {
 			isa = PBXGroup;
 			children = (
-				2733C60521A4E83600B88FB0 /* ViewController.swift */,
+				27BB58C021B8D11E0057CB0C /* LoginViewController.swift */,
 				275C5CBC21AFEBDC0076F7DF /* RegisterViewController.swift */,
 			);
 			name = "로그인&회원가입";
@@ -116,6 +120,7 @@
 			isa = PBXGroup;
 			children = (
 				272BD9D021B1357000041B8B /* account@2x.jpg */,
+				27BB58BC21B8B8A90057CB0C /* noposter.png */,
 			);
 			path = icon;
 			sourceTree = "<group>";
@@ -164,6 +169,7 @@
 				27D256B421ABEDFF0036165C /* MovieListViewController.swift */,
 				27C99AF621A6CAA100D9E06B /* ListTableViewCell.swift */,
 				2727813F21AE6E6900A80C2E /* RatingView.swift */,
+				27BB58BE21B8D0EE0057CB0C /* MovieListDAO.swift */,
 			);
 			name = "영화리스트";
 			path = "영화리스트";
@@ -249,6 +255,7 @@
 				2733C61121A4E84300B88FB0 /* LaunchScreen.storyboard in Resources */,
 				2733C60E21A4E84300B88FB0 /* Assets.xcassets in Resources */,
 				272BD9D121B1357000041B8B /* account@2x.jpg in Resources */,
+				27BB58BD21B8B8AA0057CB0C /* noposter.png in Resources */,
 				2733C60921A4E83700B88FB0 /* Main.storyboard in Resources */,
 				2727814221AEB05700A80C2E /* DetailHeadView.xib in Resources */,
 			);
@@ -312,7 +319,6 @@
 				2727814021AE6E6900A80C2E /* RatingView.swift in Sources */,
 				2776E19321B5369400A80A45 /* ReviewCell.swift in Sources */,
 				27D256BD21AD12CF0036165C /* ThearterTableViewCell.swift in Sources */,
-				2733C60621A4E83600B88FB0 /* ViewController.swift in Sources */,
 				27D256BB21ACFB7D0036165C /* ThearterViewController.swift in Sources */,
 				2733C60C21A4E83700B88FB0 /* GoMovie.xcdatamodeld in Sources */,
 				275809BB21AEB6E300301B8E /* DetailHeadView.swift in Sources */,
@@ -321,6 +327,8 @@
 				2733C60421A4E83600B88FB0 /* AppDelegate.swift in Sources */,
 				275C5CBD21AFEBDC0076F7DF /* RegisterViewController.swift in Sources */,
 				2796EB8021B4C103001C1823 /* ProfileViewController.swift in Sources */,
+				27BB58C121B8D11E0057CB0C /* LoginViewController.swift in Sources */,
+				27BB58BF21B8D0EE0057CB0C /* MovieListDAO.swift in Sources */,
 				27C99AF721A6CAA100D9E06B /* ListTableViewCell.swift in Sources */,
 				27D256B921ACDD2B0036165C /* DetailViewController.swift in Sources */,
 			);

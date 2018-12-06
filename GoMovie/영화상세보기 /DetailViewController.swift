@@ -66,7 +66,7 @@ class DetailViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         print("viewdidappear")
-         getReviews(movieId: movie[0]["movieId"] as! Int)
+        getReviews(movieId: movie[0]["movieId"] as! Int)
         
         let detailHeadView = DetailHeadView.showInTableView(detailViewController: self, movie: movie)
         self.detailHeadView = detailHeadView

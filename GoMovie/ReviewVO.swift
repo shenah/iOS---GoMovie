@@ -15,4 +15,5 @@ class ReviewVO {
     var likecnt : Int?
     var nickname : String?
     var image : UIImage?
+    var movieTitle : String?
 }
