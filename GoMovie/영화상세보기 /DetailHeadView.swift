@@ -43,8 +43,6 @@ class DetailHeadView: UIView {
         }else{
             //대화상자에 삽입할 뷰 컨트롤러 만들기
             let contentVC = UIViewController()
-            //contentVC 사이즈 설정
-            
             //댓글 달기 위한 textView
             let textView = UITextView()
             textView.frame = CGRect(x: 0, y: 0, width: 310, height: 200)
@@ -70,9 +68,8 @@ class DetailHeadView: UIView {
                 }
                 
                 let url = "http://192.168.0.113:8080/MobileServer/reviews/addreview"
-                let request = Alamofire.request(url, method: .post, parameters: ["memberId": memberId, "movieId": movieId, "movieTitle": movieTitle, "content": textView.text as? String] , encoding: URLEncoding.default, headers: nil)
+                let request = Alamofire.request(url, method: .post, parameters: ["memberId": memberId, "movieId": movieId, "movieTitle": movieTitle, "content": textView.text!] , encoding: URLEncoding.default, headers: nil)
                 request.responseJSON(completionHandler: {(json) in
-                    print(textView.text)
                     let result = json.result.value as! NSDictionary
                     if result["addreview"] != nil  {
                         self.showToast(message: "댓글 추가 성공!")
@@ -159,7 +156,6 @@ class DetailHeadView: UIView {
         toastLabel.textAlignment = .center;
         toastLabel.font = UIFont(name: "Montserrat-Light", size: 12.0)
         toastLabel.text = message
-        toastLabel.sizeToFit()
         toastLabel.alpha = 1.0
         toastLabel.layer.cornerRadius = 10;
         toastLabel.clipsToBounds  =  true

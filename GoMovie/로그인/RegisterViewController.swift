@@ -65,7 +65,7 @@ class RegisterViewController: UIViewController {
         //Alamofire로 회원가입 요청
         Alamofire.upload(multipartFormData: {multipartFormData in
             if let url = self.imageURL{
-                multipartFormData.append(self.imageURL, withName: "image")
+                multipartFormData.append(url, withName: "image")
             }
             for p in parameters{
                 multipartFormData.append((p.value.data(using: String.Encoding.utf8))!, withName: p.key)
@@ -149,7 +149,7 @@ extension RegisterViewController : UIImagePickerControllerDelegate, UINavigation
 //        fileMgr.createFile(atPath: filePath, contents: imgdata, attributes: nil)
 //        print(filePath)
 
-        imageURL = info[UIImagePickerController.InfoKey.imageURL] as! URL
+        imageURL = info[UIImagePickerController.InfoKey.imageURL] as? URL
         //print(imageURL)
         picker.dismiss(animated:false)
     }

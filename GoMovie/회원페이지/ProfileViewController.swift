@@ -30,7 +30,6 @@ class ProfileViewController: UIViewController {
     func getMyreviews(id : String){
         let request = Alamofire.request("http://192.168.0.113:8080/MobileServer/reviews/myreviews", method: .get, parameters: ["id" : id], encoding: URLEncoding.default, headers: nil)
         request.responseJSON(completionHandler: {(response) in
-            print(response)
             switch response.result{
             case.success:
                 let dic = response.result.value as! NSDictionary
@@ -61,18 +60,19 @@ class ProfileViewController: UIViewController {
         
         //배경 이미지 설정
         backimg.image = UIImage(named: "fantasticbests.jpg")
-
         profileimg.layer.cornerRadius = (profileimg.frame.width/2)
         profileimg.layer.borderWidth = 0
         profileimg.layer.masksToBounds = true
         self.tableView.delegate = self
         self.tableView.dataSource = self
-        
+        if id != nil{
+            getMyreviews(id : id!)
+        }
         
     }
     //앱이 실행하는 중 로그아웃을 할 수 있기에 
     override func viewWillAppear(_ animated: Bool) {
-        //프로필 사진 이름 가져오기
+        //프로필 사진 이름 가져오기 -> nil은 앱 다운로드한 후 시작할 때 로그인 안한 경우
         if profilePhono != "null", profilePhono != nil{
             let url = URL(string: "http://192.168.0.113:8080/MobileServer/memberimage/\(profilePhono!)")
             let imageData = try! Data(contentsOf: url!)
@@ -80,15 +80,14 @@ class ProfileViewController: UIViewController {
         }else{
             profileimg.image = UIImage(named: "account.jpg")
         }
-        if id != nil{
-            getMyreviews(id : id!)
+        // nil은 앱 다운로드한 후 시작할 때 로그인 안한 경우
+        if nickname != nil {
             lblnickname.text = nickname!
             lblnickname.sizeToFit()
         }
+        
         self.tableView.sizeToFit()
-       
     }
-    
 }
 extension ProfileViewController : UITableViewDelegate, UITableViewDataSource{
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -131,6 +130,7 @@ extension ProfileViewController : UITableViewDelegate, UITableViewDataSource{
                     self.id = nil
                     self.nickname = "닉네임"
                     self.profilePhono = "null"
+                    self.count = 0
                     tableView.reloadData()
                     self.viewWillAppear(true)
                 })

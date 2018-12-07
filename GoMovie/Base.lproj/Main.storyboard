@@ -300,7 +300,9 @@
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="os7-7I-dNl">
                                 <rect key="frame" x="0.0" y="88" width="206" height="44"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="현재 상영중"/>
+                                <state key="normal" title="현재 상영중">
+                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
                                 <connections>
                                     <action selector="nowplaying:" destination="hWS-Et-HLy" eventType="touchUpInside" id="0cu-3f-BR7"/>
                                 </connections>
@@ -308,7 +310,9 @@
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NIF-Ib-gPT">
                                 <rect key="frame" x="208" y="88" width="206" height="44"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="개봉예정"/>
+                                <state key="normal" title="개봉예정">
+                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
                                 <connections>
                                     <action selector="upcoming:" destination="hWS-Et-HLy" eventType="touchUpInside" id="HzA-io-VtR"/>
                                 </connections>
@@ -324,7 +328,7 @@
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8cZ-dv-d2q">
                                 <rect key="frame" x="208" y="132" width="206" height="3"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="0.21994791920000001" green="0.21888536889999999" blue="0.2210104695" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -333,6 +337,13 @@
                                 <rect key="frame" x="0.0" y="140" width="414" height="673"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <label key="tableFooterView" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="GNd-np-Usa">
+                                    <rect key="frame" x="0.0" y="203" width="414" height="44"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                    <nil key="textColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="ListTableViewCell" rowHeight="175" id="o5I-aA-oKY" customClass="ListTableViewCell" customModule="GoMovie" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="414" height="175"/>
@@ -403,7 +414,9 @@
                     </view>
                     <tabBarItem key="tabBarItem" title="영화정보" id="3tm-7M-vkw"/>
                     <connections>
+                        <outlet property="comingbtn" destination="NIF-Ib-gPT" id="r3d-tN-i6t"/>
                         <outlet property="cominglbl" destination="8cZ-dv-d2q" id="AbA-Bt-dQa"/>
+                        <outlet property="playingbtn" destination="os7-7I-dNl" id="pxM-h3-3RK"/>
                         <outlet property="playinglbl" destination="scE-ZT-ggn" id="PBF-NM-Lt1"/>
                         <outlet property="tableView" destination="vza-Yk-hIL" id="SqW-6Z-ibi"/>
                         <segue destination="1Rf-l5-rLU" kind="show" id="pNr-VY-4kt"/>

@@ -88,19 +88,18 @@ class LoginViewController: UIViewController {
     }
     override func viewDidLoad() {
         super.viewDidLoad()
-        appDelegate = UIApplication.shared.delegate as! AppDelegate
+        //화면 생성시 로그인 확인
+        if UserDefaults.standard.string(forKey: "id") != nil {
+            self.skip(btnskip)
+        }else{
         idtxt.placeholder = "아이디"
         pwtxt.placeholder = "비밀번호"
         btnlogin.layer.cornerRadius = 5
         btnreg.layer.cornerRadius = 5
-        
+        }
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        //화면 생성시 로그인 확인
-        if UserDefaults.standard.string(forKey: "id") != nil {
-            self.skip(btnskip)
-        }
     }
 
 }

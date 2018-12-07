@@ -11,6 +11,10 @@ import Alamofire
 class DetailViewController: UIViewController {
 
     @IBOutlet weak var tableView: UITableView!
+    
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
+        <#code#>
+    }
     var detailHeadView : DetailHeadView!
     
     //상위 뷰 컨트롤러에서 넘겨준 데이터 저장
@@ -28,7 +32,6 @@ class DetailViewController: UIViewController {
             case.success:
                 let dic = response.result.value as! NSDictionary
                 let count = dic["count"] as! Int
-                //self.movie.append(["count" : count])
                 self.detailHeadView.lblcount.text = "\(count)개"
                 let reviews = dic["reviews"] as! NSArray
                 for re in reviews{
@@ -40,9 +43,7 @@ class DetailViewController: UIViewController {
                     reviewVO.likecnt = review["likecnt"] as? Int
                     reviewVO.nickname = review["nickname"] as? String
                     reviewVO.rno = review["rno"] as? Int
-                    print(review["image"] as! String)
                     if review["image"] as! String != "null"{
-                        
                         let image = review["image"] as! String
                         let url = URL(string: "http://192.168.0.113:8080/MobileServer/memberimage/\(image)")
                         let imageData = try! Data(contentsOf: url!)
@@ -74,6 +75,7 @@ class DetailViewController: UIViewController {
         let detailHeadView = DetailHeadView.showInTableView(detailViewController: self, movie: movie)
         self.detailHeadView = detailHeadView
         tableView.tableHeaderView = detailHeadView
+        tableView.tableHeaderView
         self.tableView.reloadData()
     }
 
@@ -86,12 +88,14 @@ extension DetailViewController : UITableViewDelegate, UITableViewDataSource{
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
         let cell = tableView.dequeueReusableCell(withIdentifier: "ReviewCell", for: indexPath) as! ReviewCell
+        cell.sizeToFit()
         let review = reviewlist[indexPath.row]
+        cell.rno = review.rno
+        cell.cnt = review.likecnt
         cell.photo.image = review.image
         cell.photo.layer.cornerRadius = (cell.photo.frame.width/2)
         cell.photo.layer.borderWidth = 0
         cell.photo.layer.masksToBounds = true
-
         cell.nickname.text = review.nickname!
         cell.likecnt.text = "\(review.likecnt!)"
         cell.likecnt.sizeToFit()
