@@ -7,4 +7,5 @@ target 'GoMovie' do
 
   # Pods for GoMovie
 pod 'Alamofire'
+pod 'ESPullToRefresh'
 end

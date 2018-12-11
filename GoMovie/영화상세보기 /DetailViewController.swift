@@ -8,13 +8,10 @@
 
 import UIKit
 import Alamofire
-class DetailViewController: UIViewController {
+class DetailViewController: UIViewController,UITableViewDelegate, UITableViewDataSource {
 
     @IBOutlet weak var tableView: UITableView!
     
-    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
-        <#code#>
-    }
     var detailHeadView : DetailHeadView!
     
     //상위 뷰 컨트롤러에서 넘겨준 데이터 저장
@@ -25,7 +22,6 @@ class DetailViewController: UIViewController {
 
     //댓글 가져오기
     func getReviews(movieId : Int){
-        
         let request = Alamofire.request("http://192.168.0.113:8080/MobileServer/reviews/reviewlist?movieId=\(movieId)")
         request.responseJSON(completionHandler: {(response) in
             switch response.result{
@@ -34,9 +30,10 @@ class DetailViewController: UIViewController {
                 let count = dic["count"] as! Int
                 self.detailHeadView.lblcount.text = "\(count)개"
                 let reviews = dic["reviews"] as! NSArray
+                //기존데이터 삭제
+                self.reviewlist.removeAll()
                 for re in reviews{
                     let review = re as! NSDictionary
-                    print(review)
                     let reviewVO : ReviewVO  = ReviewVO()
                     reviewVO.content = review["content"] as? String
                     reviewVO.dispdate = review["dispdate"] as? String
@@ -64,29 +61,25 @@ class DetailViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        getReviews(movieId: movie[0]["movieId"] as! Int)
+        let detailHeadView = DetailHeadView.showInTableView(detailViewController: self, tableView: self.tableView, movie: movie)
+        self.detailHeadView = detailHeadView
+        self.tableView.tableHeaderView = detailHeadView
+        
         tableView.delegate = self
         tableView.dataSource = self
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        
-    
-        let detailHeadView = DetailHeadView.showInTableView(detailViewController: self, movie: movie)
-        self.detailHeadView = detailHeadView
-        tableView.tableHeaderView = detailHeadView
-        tableView.tableHeaderView
-        self.tableView.reloadData()
+        super.viewWillAppear(animated)
+        getReviews(movieId: movie[0]["movieId"] as! Int)
     }
 
-}
-extension DetailViewController : UITableViewDelegate, UITableViewDataSource{
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return reviewlist.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-
+        
         let cell = tableView.dequeueReusableCell(withIdentifier: "ReviewCell", for: indexPath) as! ReviewCell
         cell.sizeToFit()
         let review = reviewlist[indexPath.row]
@@ -105,11 +98,7 @@ extension DetailViewController : UITableViewDelegate, UITableViewDataSource{
         
         return cell
     }
-    
-    //cell 높이 설정
-//    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat{
-//
-//        return 140
-//    }
+
 }
+
 

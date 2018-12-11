@@ -13,19 +13,22 @@ class RegisterViewController: UIViewController {
 
     @IBOutlet weak var profilePhoto: UIImageView!
     @IBOutlet weak var idTF: UITextField!
+    @IBOutlet weak var lblId: UILabel!
     @IBOutlet weak var nicknameTF: UITextField!
+    @IBOutlet weak var lblname: UILabel!
     @IBOutlet weak var pwTF: UITextField!
+    @IBOutlet weak var lblpw: UILabel!
     @IBOutlet weak var pwConTF: UITextField!
+    @IBOutlet weak var lblpwCon: UILabel!
     @IBOutlet weak var regbtn: UIButton!
     @IBOutlet weak var cancelbtn: UIButton!
-    @IBOutlet weak var lblhint: UILabel!
     
     //선택한 이미지 파일의 URL과 이름을 저장하는 변수
     var imageURL : URL!
     
     //프로필 사진 선택 버튼 이벤트
     @IBAction func pickImg(_ sender: Any) {
-        //대화상자 생성
+        //ImagePickerController의 소스타입을 선택하는 대화상자 생성
         let select = UIAlertController(title:"이미지를 가져올 곳을 선택하세요!", message:nil, preferredStyle:.actionSheet)
         select.addAction(UIAlertAction(title:"카메라", style:.default){
             (_) in self.presentPicker(source:.camera)
@@ -40,29 +43,44 @@ class RegisterViewController: UIViewController {
         self.present(select, animated:true)
 
     }
-    //회원가입 정보 유효성 검사
+    //ImagePickerController 생성
+    func presentPicker(source: UIImagePickerController.SourceType){
+        //유효한 소스타입이 아니면 중단
+        guard UIImagePickerController.isSourceTypeAvailable(source) == true else{
+            let alert = UIAlertController(title:"사용할 수 없는 타입입니다.", message:nil, preferredStyle:.alert)
+            alert.addAction(UIAlertAction(title: "확인", style: .cancel))
+            self.present(alert, animated:false)
+            return
+        }
+        let picker = UIImagePickerController()
+        picker.delegate = self
+        picker.allowsEditing = true
+        picker.sourceType = source
+        
+        self.present(picker, animated:true )
+    }
     
     //회원가입 버튼 이벤트
     @IBAction func signUp(_ sender: Any) {
+
+        guard idTF.text != nil, nicknameTF.text != nil, pwTF.text != nil, pwConTF.text != nil else{
+            
+            return
+        }
         //파라이터 가져오기
         let id = idTF.text!
         let nickname = nicknameTF.text!
         let pw = pwTF.text!
-        let pwCon = pwConTF.text!
-
-        guard let i = idTF.text, let n = nicknameTF.text, let p = pwTF.text, let pcon = pwConTF.text else{
-            lblhint.text = "회원정보를 모두 입력하세요!"
-            lblhint.textColor = UIColor.red
-            return
-        }
+        
         let dirPaths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)
         let docDir = dirPaths[0]
         let filePath = docDir
         
+        //파라미터 배열 생성
         let parameters = ["id" : id,
                           "nickname" : nickname,
                           "pw" : pw]
-        //Alamofire로 회원가입 요청
+        //Alamofire의 multipartFormData로 회원가입 요청
         Alamofire.upload(multipartFormData: {multipartFormData in
             if let url = self.imageURL{
                 multipartFormData.append(url, withName: "image")
@@ -84,8 +102,7 @@ class RegisterViewController: UIViewController {
                     }))
                     self.present(alert, animated: true)
                 }else{
-                    self.lblhint.text = "회원가입 실패!"
-                    self.lblhint.textColor = UIColor.red
+                    print("회원가입 실패")
                 }
                 
             })
@@ -101,25 +118,9 @@ class RegisterViewController: UIViewController {
         self.dismiss(animated: true)
     }
     
-    func presentPicker(source: UIImagePickerController.SourceType){
-        //유효한 소스타입이 아니면 중단
-        guard UIImagePickerController.isSourceTypeAvailable(source) == true else{
-            let alert = UIAlertController(title:"사용할 수 없는 타입입니다.", message:nil, preferredStyle:.alert)
-            alert.addAction(UIAlertAction(title: "확인", style: .cancel))
-            self.present(alert, animated:false)
-            return
-        }
-        let picker = UIImagePickerController()
-        picker.delegate = self
-        picker.allowsEditing = true
-        picker.sourceType = source
-        
-        self.present(picker, animated:true )
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        //기본 이미지 설정
         profilePhoto.image = UIImage(named: "account.jpg")
         //네모난 이미지 뷰를 등글게 만들기
         profilePhoto.layer.cornerRadius = (profilePhoto.frame.width/2)
@@ -128,12 +129,25 @@ class RegisterViewController: UIViewController {
 
         idTF.placeholder = "아이디"
         nicknameTF.placeholder = "닉네임"
-        pwTF.placeholder = "비밀번호"
+        pwTF.placeholder = "비밀번호(8자이상, 대, 소문자, 숫자 조합)"
         pwConTF.placeholder = "비밀번호 확인"
         regbtn.layer.cornerRadius = 5
         cancelbtn.layer.cornerRadius = 5
+        idTF.becomeFirstResponder()
         
+        idTF.delegate = self
+        nicknameTF.delegate = self
+        pwTF.delegate = self
+        pwConTF.delegate = self
     }
+    
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        idTF.resignFirstResponder()
+        nicknameTF.resignFirstResponder()
+        pwTF.resignFirstResponder()
+        pwConTF.resignFirstResponder()
+    }
+    
 
 }
 extension RegisterViewController : UIImagePickerControllerDelegate, UINavigationControllerDelegate{
@@ -154,4 +168,61 @@ extension RegisterViewController : UIImagePickerControllerDelegate, UINavigation
         picker.dismiss(animated:false)
     }
 
+}
+//회원가입 정보 유효성 검사
+extension RegisterViewController : UITextFieldDelegate{
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        switch textField {
+            case idTF:
+                if (idTF.text?.isEmpty)!{
+                    lblId.text = "아이디가 비어있습니다!"
+                }else if idTF.text!.rangeOfCharacter(from: CharacterSet.alphanumerics) != nil{
+                    lblId.text = "아이디는 대/소문자와 숫자만 사용할 수 있습니다."
+                }else{
+                    lblId.textColor = UIColor.green
+                    lblId.text = "사용가능한 아이디입니다."
+                }
+            break
+            
+            case nicknameTF:
+                if (nicknameTF.text?.isEmpty)!{
+                    lblname.text = "넥에임이 비어있습니다!"
+                }else{
+                    lblname.textColor = UIColor.green
+                    lblname.text = "사용가능한 닉네임입니다."
+                }
+            break
+            case pwTF:
+                let passwordTest = NSPredicate(format: "SELF MATCHES %@", "(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).{8,0}")
+                
+                if (pwTF.text?.isEmpty)!{
+                    lblpw.text = "비밀번호가 비어있습니다!"
+                }else if !passwordTest.evaluate(with: pwTF.text!){
+                    lblpw.text = "비밀번호는 대,소문자, 숫자의 조합이고 적어도 8자!"
+                }else {
+                    lblpw.textColor = UIColor.green
+                    lblpw.text = "사용가능한 비밀번호입니다."
+                    
+                }
+            break
+            
+            case pwConTF:
+                if (pwConTF.text?.isEmpty)! {
+                    lblpwCon.text = "비밀번호가 비어있습니다!"
+                    lblpwCon.adjustsFontSizeToFitWidth = true
+                    lblpwCon.textColor = UIColor.red
+                }else if pwConTF.text! != pwTF.text!{
+                    lblpwCon.text = "비밀번호가 동일하지 않습니다!"
+                    lblpwCon.adjustsFontSizeToFitWidth = true
+                    lblpwCon.textColor = UIColor.red
+                }else{
+                    lblpwCon.textColor = UIColor.green
+                    lblpwCon.text = "사용가능한 비밀번호입니다."
+                }
+            break
+        default:
+            ()
+        }
+    }
+    
 }

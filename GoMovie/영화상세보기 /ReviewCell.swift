@@ -27,7 +27,8 @@ class ReviewCell: UITableViewCell {
             case.success:
                 let result = response.result.value as! NSDictionary
                 if result["like"] != nil {
-                    self.likecnt.text = "\(self.cnt! + 1)"
+                    self.cnt = self.cnt! + 1
+                    self.likecnt.text = "\(self.cnt!)"
                 }
                 break
             case.failure(let error):
@@ -40,7 +41,7 @@ class ReviewCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
+    
     }
 
 

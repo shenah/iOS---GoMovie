@@ -22,8 +22,9 @@ class DetailHeadView: UIView {
     
     
     //detailviewcontroller를 저장할 변수와 상위 뷰 컨트롤에서 넘겨준 데이터
-    var detailViewController : UIViewController?
-    var movie : [Dictionary<String, Any>]?
+    var detailViewController : UIViewController!
+    var tableView : UITableView!
+    var movie : [Dictionary<String, Any>]!
     
     //댓글 쓰기
     @IBAction func writReview(_ sender: Any) {
@@ -63,7 +64,7 @@ class DetailHeadView: UIView {
             let alert = UIAlertController(title: "댓글을 작성하세요!", message: "", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "확인", style: .default, handler: {(action) in
                 guard textView.text.isEmpty == false else{
-                    self.showToast(message: "댓글 추가 실패! 내용을 입력하세요!")
+                    self.showToast(message: "내용을 입력하세요!")
                     return
                 }
                 
@@ -73,7 +74,7 @@ class DetailHeadView: UIView {
                     let result = json.result.value as! NSDictionary
                     if result["addreview"] != nil  {
                         self.showToast(message: "댓글 추가 성공!")
-                        
+                        self.detailViewController.viewWillAppear(true)
                     }else{
                         self.showToast(message: "댓글 추가 실패!")
                     }})
@@ -99,15 +100,16 @@ class DetailHeadView: UIView {
         }
     }
     
-    static func showInTableView(detailViewController : UIViewController, movie: [Dictionary<String, Any>]) -> DetailHeadView{
+    static func showInTableView(detailViewController : UIViewController, tableView: UITableView, movie: [Dictionary<String, Any>]) -> DetailHeadView{
         let detailHeadView = Bundle.main.loadNibNamed("DetailHeadView", owner: nil, options: nil)?[0] as! DetailHeadView
-        detailHeadView.dataLoading(detailViewController : detailViewController, movie: movie)
+        detailHeadView.dataLoading(detailViewController : detailViewController, tableView: tableView, movie: movie)
         return detailHeadView
     }
     
     //데이터 가져오기
-    func dataLoading(detailViewController : UIViewController, movie : [Dictionary<String, Any>]){
+    func dataLoading(detailViewController : UIViewController, tableView: UITableView,  movie : [Dictionary<String, Any>]){
         self.detailViewController = detailViewController
+        self.tableView = tableView
         self.movie = movie
         let url = "https://api.themoviedb.org/3/movie/\(movie[0]["movieId"]!)?api_key=0d18b9a2449f2b69a2489e88dd795d91&language=ko-KR"
         let request = Alamofire.request(url, method: .get, parameters: nil, encoding: URLEncoding.default, headers: nil)
@@ -132,11 +134,11 @@ class DetailHeadView: UIView {
                 self.lblVoteAverage.text = "\(jsonObject["vote_average"] as! Double)"
                 self.lblVoteCount.text = "\(jsonObject["vote_count"] as! Int)명"
                 self.lblOverview.text = (jsonObject["overview"] as! NSString) as String
-                //self.lblcount.text = movie[2]["count"] as! String
             case .failure(let error):
                 print(error)
             }
         })
+       // self.tableView.tableHeaderView = self
 
     }
     
@@ -144,7 +146,7 @@ class DetailHeadView: UIView {
         super.layoutSubviews()
         self.lblOverview.sizeToFit()
         self.frame.size.height = subview.frame.size.height
-       
+        print(self.frame.size.height)
     }
     
     

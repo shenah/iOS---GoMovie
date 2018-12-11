@@ -9,10 +9,10 @@
 import UIKit
 import Alamofire
 import CoreData
+
 class MovieListViewController: UIViewController {
 
-    //AppDelegate 객체에 대한 참조 변수
-    var appDelegate = UIApplication.shared.delegate as! AppDelegate
+    
     
     @IBOutlet weak var playingbtn: UIButton!
     @IBOutlet weak var comingbtn: UIButton!
@@ -24,19 +24,23 @@ class MovieListViewController: UIViewController {
     var param : String = "now_playing"
     
     //cell의 출력할 데이터를 저장하는 객체
-    lazy var coreList : [NSManagedObject] = {
-        return self.getMoviesWith(param)
-    }()
+    lazy var coreList : [NSManagedObject] = [NSManagedObject]()
 
+    //MovieListDAO 객체 생성
+    var movieDao = MovieListDAO()
+    
+    //page 수
+    var page = 1
+    
     // "현재 상영중" 버튼 눌렀을 때 이벤트
     @IBAction func nowplaying(_ sender: Any) {
         param = "now_playing"
         //디자인 변경
-        comingbtn.titleLabel?.textColor = UIColor.lightGray
+        comingbtn.setTitleColor(UIColor.lightGray, for: .normal)
         cominglbl.backgroundColor = UIColor.white
         playinglbl.backgroundColor = UIColor.black
         //"now_playing" 데이터만 가져오고 reloadData
-        coreList = self.getMoviesWith(param)
+        coreList = movieDao.getMoviesWith(param, ascending: false)
         self.tableView.reloadData()
     }
     // "개봉예정" 버튼 눌렀을 때 이벤트
@@ -45,17 +49,18 @@ class MovieListViewController: UIViewController {
         //디자인 변경
         playingbtn.titleLabel?.textColor = UIColor.lightGray
         playinglbl.backgroundColor = UIColor.white
-        let btn = sender as! UIButton
+        comingbtn.setTitleColor(UIColor.black, for: .normal)
         cominglbl.backgroundColor = UIColor.black
+        
         //"upcoming" 데이터만 가져오고 reloadData
-        coreList = self.getMoviesWith(param)
+        coreList = movieDao.getMoviesWith(param, ascending: true)
         self.tableView.reloadData()
     }
     
-    //server에서 영화 데이터를 가져와 CoreData에 저장하는 메소드
-    func download(_ status : String){
+    //server에서 영화목록 데이터를 가져와 CoreData에 저장하는 메소드
+    func download(_ param : String){
         //데이터 요청 url
-        let url = "https://api.themoviedb.org/3/movie/\(status)?api_key=0d18b9a2449f2b69a2489e88dd795d91&language=ko-KR&region=KR"
+        let url = "https://api.themoviedb.org/3/movie/\(param)?api_key=0d18b9a2449f2b69a2489e88dd795d91&language=ko-KR&region=KR&page=\(page)"
         
         let request = Alamofire.request(url, method: .get, parameters: nil, encoding: URLEncoding.default , headers: nil)
         request.responseJSON(completionHandler: {
@@ -67,14 +72,18 @@ class MovieListViewController: UIViewController {
                 if let jsonObject = response.result.value as? NSDictionary{
                     //results 키 가져오기
                     let movies = jsonObject["results"] as! [NSDictionary]
-                    print("movies:\(movies.count)")
-                    //페이지수 가져오기
-                    let totalPages = jsonObject["total_pages"] as! Int
                     //coredata에 저장
                     for movieDic in movies{
-                        self.save(movieDic, status)
-                        self.tableView.reloadData()
+                        self.movieDao.save(movieDic, param)
                     }
+
+                    self.nowplaying(self.playingbtn)
+                    //전체 데이터를 표시한 경우에는 refreshControl를 숨김
+//                    let totalPages = jsonObject["total_pages"] as! Int
+//                    if self.page == totalPages{
+//                        self.tableView.refreshControl?.isHidden = true
+//                        self.tableView.refreshControl = nil
+//                    }
                 }else{
                     print("데이터 없음")
                 }
@@ -84,77 +93,65 @@ class MovieListViewController: UIViewController {
         })
     }
     
-    //CoreData에 목록 데이터 저장
-    func save(_ movieDic : NSDictionary, _ status : String){
-        //context 가져오기
-        let context = self.appDelegate.persistentContainer.viewContext
-        //데이터 삽입하는 객체
-        let newData = NSEntityDescription.insertNewObject(forEntityName: "Movies", into: context) as! MoviesMO
-        //데이터 넣기
-        newData.movieId = movieDic["id"] as! Int32
-        newData.voteAverage = movieDic["vote_average"] as! Double
-        newData.title = movieDic["title"] as! String
-        
-        newData.releaseDate = (movieDic["release_date"] as! NSString) as String
-        newData.status = status
-        
-        // 이미지를 Data 타입으로 저장
-        if (movieDic["poster_path"] as? NSString) != nil{
-            let posterPath = (movieDic["poster_path"] as! NSString) as String
-            let url = URL(string: "https://image.tmdb.org/t/p/w500\(posterPath)")
-            newData.posterData = try! Data(contentsOf: url!)
-        }else{
-            let noposter = UIImage(named: "noposter.png")
-            newData.posterData = noposter?.pngData()
-        }
-        //commit or rollback
-        do{
-            try context.save()
-        }catch{
-            context.rollback()
-            fatalError("\(title)저장 실패")
-        }
+
+    //refreshControl이 화면에 보여질 때 호출될 메소드
+    @objc func handleRequest(_ refreshControl:UIRefreshControl){
+        //페이지 번호를 1 증가 시키고 데이터를 다시 받아오기
+        self.page = self.page + 1
+        print(param)
+        self.download(param)
+        //refreshControl 애니메이션 중지
+        refreshControl.endRefreshing()
+        refreshControl.isHidden = true
     }
-    
-    //CoreData에서 조건에 맞는 데이터 찾아오기
-    func getMoviesWith(_ status : String) -> [NSManagedObject]{
-        //context 가져오기
-        let context = self.appDelegate.persistentContainer.viewContext
-        //Board Entity에서 데이터 가져오는 객체 - 요청 객체 가져오기
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>.init(entityName: "Movies")
-        //조건 설정
-        fetchRequest.predicate = NSPredicate(format: "status==%@", status)
-        //정렬
-        let releaseDateDesc = NSSortDescriptor(key: "releaseDate", ascending: false)
-        fetchRequest.sortDescriptors = [releaseDateDesc]
-        do {
-            let result = try context.fetch(fetchRequest)
-            return result as! [NSManagedObject]
-        } catch {
-            fatalError("데이터 가져오기 실패");
-        }
-        
-    }
+    //refresh : 아래로 드래그
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         //데이터 다운로드 - 인터넷 사용 가능할 때
-        self.download("now_playing")
-        self.download("upcoming")
+        if NetworkReachabilityManager()!.isReachable {
+            //기존 CoreData의 데이터 모두 삭제 성공하면 다운로드 시작 
+            if movieDao.deleteAll() {
+                self.download("now_playing")
+                self.download("upcoming")
+            }
+        }
+        
+        //로그인 대화상자
+        if UserDefaults.standard.string(forKey: "id") == nil {
+            //로그인 알림
+            let alert = UIAlertController(title: "로그인하시겠습니까?", message: "", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "로그인", style: .default, handler: {(action) in
+                //로그인 뷰 컨트롤러 가져오기
+                let loginViewController = self.storyboard?.instantiateViewController(withIdentifier: "LoginViewController") as! LoginViewController
+                self.present(loginViewController, animated: true)
+            }))
+            alert.addAction(UIAlertAction(title: "나중에", style: .cancel))
+            self.present(alert, animated: true)
+        }
+        
+        
+        self.tabBarController?.title = "영화정보"
         tableView.delegate = self
         tableView.dataSource = self
-        self.tabBarController?.title = "영화정보"
+        
+        self.tableView.refreshControl = UIRefreshControl()
+        
+        self.tableView.refreshControl?.addTarget(self, action: #selector(MovieListViewController.handleRequest(_:)), for: .valueChanged)
+        self.tableView.refreshControl?.tintColor = UIColor.red
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        nowplaying(playingbtn)
+        //refresh
+
+        
     }
 
 }
 extension MovieListViewController : UITableViewDelegate, UITableViewDataSource{
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        print("corelist:\(coreList.count)")
         return coreList.count
     }
     
@@ -166,7 +163,6 @@ extension MovieListViewController : UITableViewDelegate, UITableViewDataSource{
         //coreData에 저장된 데이터 가져오기
         cell.poster.image = UIImage(data: movieData.value(forKey: "posterData") as! Data)
         cell.title.text = movieData.value(forKey: "title") as? String
-        //제목 텍스트 크기 설정 
         cell.title.adjustsFontSizeToFitWidth = true
         cell.releaseDate.text = movieData.value(forKey: "releaseDate") as? String
 
