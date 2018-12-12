@@ -63,8 +63,7 @@ class RegisterViewController: UIViewController {
     //회원가입 버튼 이벤트
     @IBAction func signUp(_ sender: Any) {
 
-        guard idTF.text != nil, nicknameTF.text != nil, pwTF.text != nil, pwConTF.text != nil else{
-            
+        guard lblId.textColor == UIColor.green,lblname.textColor == UIColor.green, lblpw.textColor == UIColor.green, lblpwCon.textColor == UIColor.green else{
             return
         }
         //파라이터 가져오기
@@ -133,8 +132,8 @@ class RegisterViewController: UIViewController {
         pwConTF.placeholder = "비밀번호 확인"
         regbtn.layer.cornerRadius = 5
         cancelbtn.layer.cornerRadius = 5
-        idTF.becomeFirstResponder()
         
+        idTF.becomeFirstResponder()
         idTF.delegate = self
         nicknameTF.delegate = self
         pwTF.delegate = self
@@ -175,8 +174,10 @@ extension RegisterViewController : UITextFieldDelegate{
         switch textField {
             case idTF:
                 if (idTF.text?.isEmpty)!{
+                    lblId.textColor = UIColor.red
                     lblId.text = "아이디가 비어있습니다!"
                 }else if idTF.text!.rangeOfCharacter(from: CharacterSet.alphanumerics) != nil{
+                    lblId.textColor = UIColor.red
                     lblId.text = "아이디는 대/소문자와 숫자만 사용할 수 있습니다."
                 }else{
                     lblId.textColor = UIColor.green
@@ -186,18 +187,21 @@ extension RegisterViewController : UITextFieldDelegate{
             
             case nicknameTF:
                 if (nicknameTF.text?.isEmpty)!{
-                    lblname.text = "넥에임이 비어있습니다!"
+                    lblname.textColor = UIColor.red
+                    lblname.text = "넥네임이 비어있습니다!"
                 }else{
                     lblname.textColor = UIColor.green
                     lblname.text = "사용가능한 닉네임입니다."
                 }
             break
             case pwTF:
-                let passwordTest = NSPredicate(format: "SELF MATCHES %@", "(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).{8,0}")
+                let passwordTest = NSPredicate(format: "SELF MATCHES %@", "^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).{8,}$")
                 
                 if (pwTF.text?.isEmpty)!{
+                    lblpw.textColor = UIColor.red
                     lblpw.text = "비밀번호가 비어있습니다!"
                 }else if !passwordTest.evaluate(with: pwTF.text!){
+                    lblpw.textColor = UIColor.red
                     lblpw.text = "비밀번호는 대,소문자, 숫자의 조합이고 적어도 8자!"
                 }else {
                     lblpw.textColor = UIColor.green
@@ -208,16 +212,14 @@ extension RegisterViewController : UITextFieldDelegate{
             
             case pwConTF:
                 if (pwConTF.text?.isEmpty)! {
+                    lblpwCon.textColor = UIColor.red
                     lblpwCon.text = "비밀번호가 비어있습니다!"
-                    lblpwCon.adjustsFontSizeToFitWidth = true
-                    lblpwCon.textColor = UIColor.red
                 }else if pwConTF.text! != pwTF.text!{
-                    lblpwCon.text = "비밀번호가 동일하지 않습니다!"
-                    lblpwCon.adjustsFontSizeToFitWidth = true
                     lblpwCon.textColor = UIColor.red
+                    lblpwCon.text = "비밀번호가 동일하지 않습니다!"
                 }else{
-                    lblpwCon.textColor = UIColor.green
                     lblpwCon.text = "사용가능한 비밀번호입니다."
+                    lblpwCon.textColor = UIColor.green
                 }
             break
         default:

@@ -13,6 +13,7 @@ import CoreData
 class AppDelegate: UIResponder, UIApplicationDelegate {
     
     var window: UIWindow?
+    
     //공통으로 사용할 사항 클래스 객체 생성
     let util = Util()
     

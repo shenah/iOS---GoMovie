@@ -9,6 +9,7 @@
 import UIKit
 import Alamofire
 import CoreData
+import ESPullToRefresh
 
 class MovieListViewController: UIViewController {
 
@@ -76,8 +77,12 @@ class MovieListViewController: UIViewController {
                     for movieDic in movies{
                         self.movieDao.save(movieDic, param)
                     }
-
-                    self.nowplaying(self.playingbtn)
+                    if param == "now_playing" {
+                        self.coreList = self.movieDao.getMoviesWith(param, ascending: false)
+                    }else {
+                        self.coreList = self.movieDao.getMoviesWith(param, ascending: true)
+                    }
+                    self.tableView.reloadData()
                     //전체 데이터를 표시한 경우에는 refreshControl를 숨김
 //                    let totalPages = jsonObject["total_pages"] as! Int
 //                    if self.page == totalPages{
@@ -97,8 +102,7 @@ class MovieListViewController: UIViewController {
     //refreshControl이 화면에 보여질 때 호출될 메소드
     @objc func handleRequest(_ refreshControl:UIRefreshControl){
         //페이지 번호를 1 증가 시키고 데이터를 다시 받아오기
-        self.page = self.page + 1
-        print(param)
+        page = page + 1
         self.download(param)
         //refreshControl 애니메이션 중지
         refreshControl.endRefreshing()
@@ -115,6 +119,7 @@ class MovieListViewController: UIViewController {
             if movieDao.deleteAll() {
                 self.download("now_playing")
                 self.download("upcoming")
+                nowplaying(playingbtn )
             }
         }
         
@@ -144,8 +149,7 @@ class MovieListViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        //refresh
-
+        let windowFrame = UIApplication.shared.delegate?.window!?.frame
         
     }
 

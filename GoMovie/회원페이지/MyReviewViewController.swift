@@ -24,6 +24,9 @@ class MyReviewViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         tableView.sizeToFit()
     }
+    func deleteReview(){
+        
+    }
     
 }
 extension MyReviewViewController : UITableViewDelegate, UITableViewDataSource{
@@ -43,5 +46,12 @@ extension MyReviewViewController : UITableViewDelegate, UITableViewDataSource{
         cell.time.adjustsFontSizeToFitWidth = true
         return cell
     }
-    
+    //편집 기능을 실행할 때 보여질 버튼을 설정하는 메소드
+    func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
+        return .delete
+    }
+    //셀 편집할 때 호출되는 메소드
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath){
+        
+    }
 }

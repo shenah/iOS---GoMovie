@@ -23,7 +23,6 @@ class DetailHeadView: UIView {
     
     //detailviewcontroller를 저장할 변수와 상위 뷰 컨트롤에서 넘겨준 데이터
     var detailViewController : UIViewController!
-    var tableView : UITableView!
     var movie : [Dictionary<String, Any>]!
     
     //댓글 쓰기
@@ -33,6 +32,7 @@ class DetailHeadView: UIView {
             
             //로그인 알림
             let alert = UIAlertController(title: "댓글을 남기려면 로그인 해야 합니다.", message: "", preferredStyle: .alert)
+            
             alert.addAction(UIAlertAction(title: "로그인", style: .default, handler: {(action) in
                 //로그인 뷰 컨트롤러 가져오기
                 let loginViewController = self.detailViewController?.storyboard?.instantiateViewController(withIdentifier: "LoginViewController") as! LoginViewController
@@ -44,16 +44,9 @@ class DetailHeadView: UIView {
         }else{
             //대화상자에 삽입할 뷰 컨트롤러 만들기
             let contentVC = UIViewController()
-            //댓글 달기 위한 textView
+            //댓글 쓰기 위한 textView
             let textView = UITextView()
-            textView.frame = CGRect(x: 0, y: 0, width: 310, height: 200)
-            textView.layer.borderWidth = 1
-            textView.layer.borderColor = UIColor.clear.cgColor
-            textView.backgroundColor = UIColor.lightGray.withAlphaComponent(0.3)
-            contentVC.preferredContentSize = CGSize(width: textView.frame.width, height: textView.frame.height)
-            //텍스트 뷰 삽입
-            contentVC.view.addSubview(textView)
-           
+            
             //parameter
             let memberId = UserDefaults.standard.string(forKey: "id")!
             let movieId = movie![0]["movieId"] as! Int
@@ -81,6 +74,13 @@ class DetailHeadView: UIView {
             }))
             alert.addAction(UIAlertAction(title: "취소", style: .cancel))
             
+            textView.frame = CGRect(x: 0, y: 0, width: alert.view.frame.width-100, height: 200)
+            textView.layer.borderWidth = 1
+            textView.layer.borderColor = UIColor.clear.cgColor
+            textView.backgroundColor = UIColor.lightGray.withAlphaComponent(0.3)
+            contentVC.preferredContentSize = CGSize(width: textView.frame.width, height: textView.frame.height)
+            //텍스트 뷰 삽입
+            contentVC.view.addSubview(textView)
             //대화상자에 삽입
             alert.setValue(contentVC, forKey: "contentViewController")
             detailViewController?.present(alert, animated: true)
@@ -100,19 +100,18 @@ class DetailHeadView: UIView {
         }
     }
     
-    static func showInTableView(detailViewController : UIViewController, tableView: UITableView, movie: [Dictionary<String, Any>]) -> DetailHeadView{
+    static func showInTableView(detailViewController : UIViewController, movie: [Dictionary<String, Any>]) -> DetailHeadView{
         let detailHeadView = Bundle.main.loadNibNamed("DetailHeadView", owner: nil, options: nil)?[0] as! DetailHeadView
-        detailHeadView.dataLoading(detailViewController : detailViewController, tableView: tableView, movie: movie)
+        detailHeadView.dataLoading(detailViewController : detailViewController, movie: movie)
         return detailHeadView
     }
     
     //데이터 가져오기
-    func dataLoading(detailViewController : UIViewController, tableView: UITableView,  movie : [Dictionary<String, Any>]){
+    func dataLoading(detailViewController : UIViewController, movie : [Dictionary<String, Any>]){
         self.detailViewController = detailViewController
-        self.tableView = tableView
         self.movie = movie
         let url = "https://api.themoviedb.org/3/movie/\(movie[0]["movieId"]!)?api_key=0d18b9a2449f2b69a2489e88dd795d91&language=ko-KR"
-        let request = Alamofire.request(url, method: .get, parameters: nil, encoding: URLEncoding.default, headers: nil)
+        let request = Alamofire.request(url, method: HTTPMethod.get, parameters: nil, encoding: URLEncoding.default, headers: nil)
         request.responseJSON(completionHandler: {
             response in
             //json데이터 파싱
@@ -138,7 +137,6 @@ class DetailHeadView: UIView {
                 print(error)
             }
         })
-       // self.tableView.tableHeaderView = self
 
     }
     
@@ -146,10 +144,10 @@ class DetailHeadView: UIView {
         super.layoutSubviews()
         self.lblOverview.sizeToFit()
         self.frame.size.height = subview.frame.size.height
-        print(self.frame.size.height)
     }
     
     
+    //Toast 정의
     func showToast(message : String) {
         
         let toastLabel = UILabel(frame: CGRect(x: detailViewController!.view.frame.size.width/2 - 75, y: detailViewController!.view.frame.size.height-100, width: 150, height: 35))

@@ -83,7 +83,6 @@ class ProfileViewController: UIViewController {
         // nil은 앱 다운로드한 후 시작할 때 로그인 안한 경우
         if nickname != nil {
             lblnickname.text = nickname!
-            lblnickname.sizeToFit()
         }
         
         self.tableView.sizeToFit()

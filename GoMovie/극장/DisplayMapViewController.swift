@@ -16,6 +16,7 @@ class DisplayMapViewController: UIViewController, CLLocationManagerDelegate {
     //검색 결과 저장할 배열 생성
     var matchingItems : [MKMapItem] = [MKMapItem]()
 
+    let tableView : UITableView = UITableView()
     
     @IBOutlet weak var searchbar: UISearchBar!
     @IBOutlet weak var mapView: MKMapView!
@@ -41,7 +42,6 @@ class DisplayMapViewController: UIViewController, CLLocationManagerDelegate {
             }else{
                 //전체 데이터 순회
                 for item in respose!.mapItems{
-                    print("item:\(item)")
                     //데이터 저장
                     self.matchingItems.append(item)
                     //맵에 출력
@@ -51,6 +51,9 @@ class DisplayMapViewController: UIViewController, CLLocationManagerDelegate {
                     annotation.title = item.name!
                     self.mapView.addAnnotation(annotation)
                 }
+                
+                self.tableView.reloadData()
+                
             }
         })
     }
@@ -62,12 +65,11 @@ class DisplayMapViewController: UIViewController, CLLocationManagerDelegate {
         //대화상자에 삽입할 뷰 컨트롤러 만들기
         let contentVC = UIViewController()
         //검색 결과 출력할 테이블 뷰 생성
-        var tableView : UITableView = UITableView()
+        
         tableView.contentSize.height = 200
         contentVC.view.addSubview(tableView)
         contentVC.preferredContentSize = CGSize(width: tableView.frame.height, height: tableView.frame.width)
-        tableView.delegate = self
-        tableView.dataSource = self
+        self.tableView.reloadData()
         //대화상자에 삽입
         alert.setValue(contentVC, forKey: "contentViewController")
         //대화 상자 출력
@@ -87,6 +89,10 @@ class DisplayMapViewController: UIViewController, CLLocationManagerDelegate {
         
         searchbar.becomeFirstResponder()
         searchbar.delegate = self
+        
+        tableView.delegate = self
+        tableView.dataSource = self
+        
         
     }
     

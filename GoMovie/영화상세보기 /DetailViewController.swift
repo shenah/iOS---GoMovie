@@ -61,7 +61,7 @@ class DetailViewController: UIViewController,UITableViewDelegate, UITableViewDat
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        let detailHeadView = DetailHeadView.showInTableView(detailViewController: self, tableView: self.tableView, movie: movie)
+        let detailHeadView = DetailHeadView.showInTableView(detailViewController: self, movie: movie)
         self.detailHeadView = detailHeadView
         self.tableView.tableHeaderView = detailHeadView
         
@@ -90,6 +90,7 @@ class DetailViewController: UIViewController,UITableViewDelegate, UITableViewDat
         cell.photo.layer.borderWidth = 0
         cell.photo.layer.masksToBounds = true
         cell.nickname.text = review.nickname!
+        cell.nickname.sizeToFit()
         cell.likecnt.text = "\(review.likecnt!)"
         cell.likecnt.sizeToFit()
         cell.content.text = review.content!
