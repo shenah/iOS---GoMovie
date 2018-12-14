@@ -17,9 +17,9 @@ class ProfileViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     
     //로그인 정보 가져오기
-    var id = UserDefaults.standard.string(forKey: "id")
-    var nickname = UserDefaults.standard.string(forKey: "nickname")
-    var profilePhono = UserDefaults.standard.string(forKey: "profilePhoto")
+    var id : String?
+    var nickname : String?
+    var profilePhono : String?
     
     //댓글 정보 저장할 객체 생성
     var list : [ReviewVO] = [ReviewVO]()
@@ -65,13 +65,20 @@ class ProfileViewController: UIViewController {
         profileimg.layer.masksToBounds = true
         self.tableView.delegate = self
         self.tableView.dataSource = self
-        if id != nil{
-            getMyreviews(id : id!)
-        }
+        
         
     }
     //앱이 실행하는 중 로그아웃을 할 수 있기에 
     override func viewWillAppear(_ animated: Bool) {
+        //로그인 정보 가져오기
+        id = UserDefaults.standard.string(forKey: "id")
+        nickname = UserDefaults.standard.string(forKey: "nickname")
+        profilePhono = UserDefaults.standard.string(forKey: "profilePhoto")
+        //로그인 했을 때 내 댓글 정보 가져오기
+        if id != nil{
+            getMyreviews(id : id!)
+        }
+        
         //프로필 사진 이름 가져오기 -> nil은 앱 다운로드한 후 시작할 때 로그인 안한 경우
         if profilePhono != "null", profilePhono != nil{
             let url = URL(string: "http://192.168.0.113:8080/MobileServer/memberimage/\(profilePhono!)")
@@ -80,12 +87,13 @@ class ProfileViewController: UIViewController {
         }else{
             profileimg.image = UIImage(named: "account.jpg")
         }
-        // nil은 앱 다운로드한 후 시작할 때 로그인 안한 경우
-        if nickname != nil {
+        //앱 다운로드한 후 시작할 때 로그인 안한 경우(nil) 경우 제외
+        if nickname != nil{
             lblnickname.text = nickname!
         }
         
-        self.tableView.sizeToFit()
+        tableView.reloadData()
+        
     }
 }
 extension ProfileViewController : UITableViewDelegate, UITableViewDataSource{
@@ -126,11 +134,7 @@ extension ProfileViewController : UITableViewDelegate, UITableViewDataSource{
                     UserDefaults.standard.set(nil, forKey: "id")
                     UserDefaults.standard.set("닉네임", forKey: "nickname")
                     UserDefaults.standard.set("null", forKey: "profilePhoto")
-                    self.id = nil
-                    self.nickname = "닉네임"
-                    self.profilePhono = "null"
                     self.count = 0
-                    tableView.reloadData()
                     self.viewWillAppear(true)
                 })
                 alert.addAction(UIAlertAction(title: "취소", style: .cancel))

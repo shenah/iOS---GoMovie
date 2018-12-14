@@ -26,6 +26,7 @@ class DisplayMapViewController: UIViewController, CLLocationManagerDelegate {
     
     //검색하는 메소드
     func performSearch(){
+        
         //요청 객체 만들기
         let request = MKLocalSearch.Request()
         //검색어와 검색영역 설정
@@ -58,40 +59,21 @@ class DisplayMapViewController: UIViewController, CLLocationManagerDelegate {
         })
     }
     
-    // 결과 출력
-    func resultAlert(){
-        let alert = UIAlertController(title: "경로 가져오기", message: "", preferredStyle: .actionSheet)
-        alert.addAction(UIAlertAction(title: "취소", style: .cancel))
-        //대화상자에 삽입할 뷰 컨트롤러 만들기
-        let contentVC = UIViewController()
-        //검색 결과 출력할 테이블 뷰 생성
-        
-        tableView.contentSize.height = 200
-        contentVC.view.addSubview(tableView)
-        contentVC.preferredContentSize = CGSize(width: tableView.frame.height, height: tableView.frame.width)
-        self.tableView.reloadData()
-        //대화상자에 삽입
-        alert.setValue(contentVC, forKey: "contentViewController")
-        //대화 상자 출력
-        self.present(alert, animated: true)
-
-    }
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        self.title = "주변 검색"
         //위치정보 사용 객체 생성
         locationManager = CLLocationManager()
-        //위치정보를 사용 권한을 묻는 대화상자
-        locationManager?.requestWhenInUseAuthorization()
-        //mapview 현재 위치를 출력
+        //위치정보 사용 권한을 묻는 대화상자 출력
+        locationManager.requestWhenInUseAuthorization()
+        //맵 뷰에 현재 위치를 출력
         mapView.showsUserLocation = true
+        //mapView의 delegate 설정
         mapView.delegate = self
         
         searchbar.becomeFirstResponder()
         searchbar.delegate = self
-        
-        tableView.delegate = self
-        tableView.dataSource = self
         
         
     }
@@ -116,35 +98,14 @@ extension DisplayMapViewController : UISearchBarDelegate{
         mapView.removeAnnotations(mapView.annotations)
         //검색 메소드 호출
         performSearch()
-        resultAlert()
     }
     
     //ResultsListButton 클릭했을 때
     func searchBarResultsListButtonClicked(_ searchBar: UISearchBar) {
-        resultAlert()
+        let thearterViewController = self.storyboard?.instantiateViewController(withIdentifier: "ThearterViewController") as! ThearterViewController
+        thearterViewController.items = matchingItems
+        self.navigationController?.pushViewController(thearterViewController, animated: true)
     }
 }
-extension DisplayMapViewController : UITableViewDelegate, UITableViewDataSource{
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        print(matchingItems.count)
-        return matchingItems.count
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = UITableViewCell(style: .subtitle, reuseIdentifier: "cell")
-        let item = matchingItems[indexPath.row]
-        print(item.name)
-        cell.textLabel?.text = item.name!
-        
-        cell.detailTextLabel?.text = "\(item.placemark.country!) \(item.placemark.locality!) \(item.placemark.thoroughfare!)"
-        print(cell.detailTextLabel?.text)
-        return cell
-    }
-    
-    
-    
-//    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//        <#code#>
-//    }
-}
+
 

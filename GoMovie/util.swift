@@ -10,7 +10,7 @@ import UIKit
 import Alamofire
 class Util: NSObject {
     
-    // 알림
+    // 로그인 알림
     func loginAlert(controller : UIViewController, message : String){
         let alert = UIAlertController(title: message, message: "", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "로그인", style: .default, handler: {(action) in
@@ -18,7 +18,7 @@ class Util: NSObject {
             let loginViewController = controller.storyboard?.instantiateViewController(withIdentifier: "LoginViewController") as! LoginViewController
             controller.present(loginViewController, animated: true)
         }))
-        alert.addAction(UIAlertAction(title: "취소", style: .cancel))
+        alert.addAction(UIAlertAction(title: "나중에", style: .cancel))
         controller.present(alert, animated: true)
     }
     //일반 알림
@@ -28,10 +28,11 @@ class Util: NSObject {
         controller.present(alert, animated: true)
     }
     
-    //alamofire
+//    //alamofire
 //    func useAlamofire(serverURL: String, parameters:[NSDictionary], httpmethod: HTTPMethod) -> NSDictionary{
+//        var temp = httpmethod
 //        let url = "http://192.168.0.113:8080/MobileServer/" + serverURL
-//        let request = Alamofire.request(url, method: httpmethod, parameters: parameters, encoding: URLEncoding.default, headers: nil)
+//        let request = Alamofire.request(url, method: temp, parameters: parameters, encoding: URLEncoding.default, headers: nil)
 //        //결과
 //        request.responseJSON{
 //            response in
@@ -41,7 +42,7 @@ class Util: NSObject {
 //                return jsonObject
 //            case .failure(let error):
 //                return ["error" : "\(error)" ]
-//                
+//
 //            }
 //        }
 //    }

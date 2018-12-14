@@ -21,18 +21,21 @@ class MovieListViewController: UIViewController {
     @IBOutlet weak var cominglbl: UILabel!
     @IBOutlet weak var tableView: UITableView!
     
+    //공용 메소드 사용
+    var util : Util = Util()
+    
     // 출력할 데이터 parameter
     var param : String = "now_playing"
     
     //cell의 출력할 데이터를 저장하는 객체
     lazy var coreList : [NSManagedObject] = [NSManagedObject]()
 
-    //MovieListDAO 객체 생성
+    //CoreData 사용하기 위한 MovieListDAO 객체 생성
     var movieDao = MovieListDAO()
     
-    //page 수
-    var page = 1
-    
+    var playingPage = 1
+    var comingPage = 1
+
     // "현재 상영중" 버튼 눌렀을 때 이벤트
     @IBAction func nowplaying(_ sender: Any) {
         param = "now_playing"
@@ -59,7 +62,7 @@ class MovieListViewController: UIViewController {
     }
     
     //server에서 영화목록 데이터를 가져와 CoreData에 저장하는 메소드
-    func download(_ param : String){
+    func download(_ param : String, page: Int){
         //데이터 요청 url
         let url = "https://api.themoviedb.org/3/movie/\(param)?api_key=0d18b9a2449f2b69a2489e88dd795d91&language=ko-KR&region=KR&page=\(page)"
         
@@ -77,18 +80,15 @@ class MovieListViewController: UIViewController {
                     for movieDic in movies{
                         self.movieDao.save(movieDic, param)
                     }
+
+                    //totalpage 가져오기
+                    let totalPages = jsonObject["total_pages"] as! Int
+                    
+                    //시작 화면 데이터 가져오기
                     if param == "now_playing" {
                         self.coreList = self.movieDao.getMoviesWith(param, ascending: false)
-                    }else {
-                        self.coreList = self.movieDao.getMoviesWith(param, ascending: true)
+                        self.tableView.reloadData()
                     }
-                    self.tableView.reloadData()
-                    //전체 데이터를 표시한 경우에는 refreshControl를 숨김
-//                    let totalPages = jsonObject["total_pages"] as! Int
-//                    if self.page == totalPages{
-//                        self.tableView.refreshControl?.isHidden = true
-//                        self.tableView.refreshControl = nil
-//                    }
                 }else{
                     print("데이터 없음")
                 }
@@ -98,18 +98,22 @@ class MovieListViewController: UIViewController {
         })
     }
     
-
     //refreshControl이 화면에 보여질 때 호출될 메소드
     @objc func handleRequest(_ refreshControl:UIRefreshControl){
         //페이지 번호를 1 증가 시키고 데이터를 다시 받아오기
-        page = page + 1
-        self.download(param)
+        if param == "now_playing" {
+            playingPage = playingPage + 1
+            self.download(param, page: playingPage)
+        }else{
+            comingPage = comingPage + 1
+            self.download(param, page: comingPage)
+        }
+        
         //refreshControl 애니메이션 중지
         refreshControl.endRefreshing()
         refreshControl.isHidden = true
     }
-    //refresh : 아래로 드래그
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -117,42 +121,44 @@ class MovieListViewController: UIViewController {
         if NetworkReachabilityManager()!.isReachable {
             //기존 CoreData의 데이터 모두 삭제 성공하면 다운로드 시작 
             if movieDao.deleteAll() {
-                self.download("now_playing")
-                self.download("upcoming")
-                nowplaying(playingbtn )
+                self.download("now_playing", page: playingPage)
+                self.download("upcoming", page: comingPage)
             }
         }
         
-        //로그인 대화상자
+        //로그인하지 않았을 때
         if UserDefaults.standard.string(forKey: "id") == nil {
             //로그인 알림
-            let alert = UIAlertController(title: "로그인하시겠습니까?", message: "", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "로그인", style: .default, handler: {(action) in
-                //로그인 뷰 컨트롤러 가져오기
-                let loginViewController = self.storyboard?.instantiateViewController(withIdentifier: "LoginViewController") as! LoginViewController
-                self.present(loginViewController, animated: true)
-            }))
-            alert.addAction(UIAlertAction(title: "나중에", style: .cancel))
-            self.present(alert, animated: true)
+            util.loginAlert(controller: self, message: "로그인하시겠습니까?")
         }
-        
         
         self.tabBarController?.title = "영화정보"
         tableView.delegate = self
         tableView.dataSource = self
-        
+        //refreshControl 생성
         self.tableView.refreshControl = UIRefreshControl()
-        
         self.tableView.refreshControl?.addTarget(self, action: #selector(MovieListViewController.handleRequest(_:)), for: .valueChanged)
-        self.tableView.refreshControl?.tintColor = UIColor.red
+        
+        //MARK:下拉刷新数据
+//        tableView.es_addPullToRrefresh {
+//            [weak self] in
+//            Alamofire.request((self?.url)!, method: .get, parameters: ["tag":(self?.tag)!,"start":0,"count":(self?.pageSize)],encoding: URLEncoding.default).responseJSON {
+//                response in
+//
+//                switch response.result {
+//                case .success:
+//                    self?.books = JSON(response.result.value)["subjects"]
+//                    self?.page = 1
+//                    self?.tableView.reloadData()
+//                    self?.tableView.es_stopPullToRefresh(completion: true)
+//                case .failure(let error):
+//                    print(error)
+//                }
+//            }
+//        }
+        
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        let windowFrame = UIApplication.shared.delegate?.window!?.frame
-        
-    }
-
 }
 extension MovieListViewController : UITableViewDelegate, UITableViewDataSource{
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

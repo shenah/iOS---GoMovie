@@ -59,10 +59,68 @@ class RegisterViewController: UIViewController {
         
         self.present(picker, animated:true )
     }
-    
+    //유효성 검사 메소드
+    func isvalidated(textField: UITextField){
+        switch textField {
+        case idTF:
+            if (idTF.text?.isEmpty)!{
+                lblId.textColor = UIColor.red
+                lblId.text = "아이디가 비어있습니다!"
+            }else if idTF.text!.rangeOfCharacter(from: CharacterSet.alphanumerics.inverted) != nil {
+                lblId.textColor = UIColor.red
+                lblId.text = "아이디는 대/소문자와 숫자만 사용할 수 있습니다."
+            }else{
+                lblId.textColor = UIColor.green
+                lblId.text = "사용가능한 아이디입니다."
+            }
+            break
+            
+        case nicknameTF:
+            if (nicknameTF.text?.isEmpty)!{
+                lblname.textColor = UIColor.red
+                lblname.text = "넥네임이 비어있습니다!"
+            }else{
+                lblname.textColor = UIColor.green
+                lblname.text = "사용가능한 닉네임입니다."
+            }
+            break
+            
+        case pwTF:
+            let passwordTest = NSPredicate(format: "SELF MATCHES %@", "^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).{8,}$")
+            
+            if (pwTF.text?.isEmpty)!{
+                lblpw.textColor = UIColor.red
+                lblpw.text = "비밀번호가 비어있습니다!"
+            }else if !passwordTest.evaluate(with: pwTF.text!){
+                lblpw.textColor = UIColor.red
+                lblpw.text = "비밀번호는 대,소문자, 숫자의 조합이고 적어도 8자!"
+            }else {
+                lblpw.textColor = UIColor.green
+                lblpw.text = "사용가능한 비밀번호입니다."
+                
+            }
+            break
+            
+        case pwConTF:
+            if (pwConTF.text?.isEmpty)! {
+                lblpwCon.textColor = UIColor.red
+                lblpwCon.text = "비밀번호가 비어있습니다!"
+            }else if pwConTF.text! != pwTF.text!{
+                lblpwCon.textColor = UIColor.red
+                lblpwCon.text = "비밀번호가 동일하지 않습니다!"
+            }else{
+                lblpwCon.text = "사용가능한 비밀번호입니다."
+                lblpwCon.textColor = UIColor.green
+            }
+            break
+        default:
+            ()
+        }
+    }
     //회원가입 버튼 이벤트
     @IBAction func signUp(_ sender: Any) {
-
+        
+        //유효성 검사를 통과하여야만 회원가입 가능
         guard lblId.textColor == UIColor.green,lblname.textColor == UIColor.green, lblpw.textColor == UIColor.green, lblpwCon.textColor == UIColor.green else{
             return
         }
@@ -71,10 +129,11 @@ class RegisterViewController: UIViewController {
         let nickname = nicknameTF.text!
         let pw = pwTF.text!
         
-        let dirPaths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)
-        let docDir = dirPaths[0]
-        let filePath = docDir
-        
+        //이미지 업로드 테스트 - simulator에서 저장한 이미지 파일 경로를 가져오기
+        /*        let dirPaths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)
+         let docDir = dirPaths[0]
+         let filePath = docDir
+         */
         //파라미터 배열 생성
         let parameters = ["id" : id,
                           "nickname" : nickname,
@@ -88,25 +147,25 @@ class RegisterViewController: UIViewController {
                 multipartFormData.append((p.value.data(using: String.Encoding.utf8))!, withName: p.key)
             }
         }, to: "http://192.168.0.113:8080/MobileServer/member/register", method: .post, encodingCompletion: {encodingResult in
-        
+            
             switch encodingResult {
-        case .success(let uploadRequest, _, _):
-            uploadRequest.responseJSON(completionHandler: { json in
-                let dic = json.result.value as! NSDictionary
-                if dic["register"] != nil{
-                    //회원가입 성공한 후 로그인 화면으로 이동
-                    let alert = UIAlertController(title: "회원가입 성공하셨습니다!", message: "", preferredStyle: .alert)
-                    alert.addAction(UIAlertAction(title: "확인", style: .cancel, handler:{(action) in
-                        self.presentingViewController?.dismiss(animated: true)
-                    }))
-                    self.present(alert, animated: true)
-                }else{
-                    print("회원가입 실패")
-                }
-                
-            })
-        case .failure(let error):
-            print("회원가입 실패:\(error)")
+            case .success(let uploadRequest, _, _):
+                uploadRequest.responseJSON(completionHandler: { json in
+                    let dic = json.result.value as! NSDictionary
+                    if dic["register"] != nil{
+                        //회원가입 성공한 후 로그인 화면으로 이동
+                        let alert = UIAlertController(title: "회원가입 성공하셨습니다!", message: "", preferredStyle: .alert)
+                        alert.addAction(UIAlertAction(title: "확인", style: .cancel, handler:{(action) in
+                            self.presentingViewController?.dismiss(animated: true)
+                        }))
+                        self.present(alert, animated: true)
+                    }else{
+                        print("회원가입 실패")
+                    }
+                    
+                })
+            case .failure(let error):
+                print("회원가입 실패:\(error)")
             }
         })
 
@@ -154,16 +213,19 @@ extension RegisterViewController : UIImagePickerControllerDelegate, UINavigation
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]){
         self.profilePhoto.image =
             info[UIImagePickerController.InfoKey.editedImage] as? UIImage
-//        let dirPaths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)
-//        let docDir = dirPaths[0]
-//        let filePath = docDir + "/profile.png"
-//        let fileMgr = FileManager.default
-//        let imgdata = profilePhoto.image?.pngData()
-//        fileMgr.createFile(atPath: filePath, contents: imgdata, attributes: nil)
-//        print(filePath)
-
+        
+        //이미지 업로드 테스트 - simulator의 이미지를 저장
+/*        let dirPaths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)
+        let docDir = dirPaths[0]
+        let filePath = docDir + "/profile.png"
+        let fileMgr = FileManager.default
+        let imgdata = profilePhoto.image?.pngData()
+        fileMgr.createFile(atPath: filePath, contents: imgdata, attributes: nil)
+        print(filePath)
+*/
+        //imagePicker로 선택한 이미지 파일 경로 가져오기
         imageURL = info[UIImagePickerController.InfoKey.imageURL] as? URL
-        //print(imageURL)
+
         picker.dismiss(animated:false)
     }
 
@@ -171,60 +233,7 @@ extension RegisterViewController : UIImagePickerControllerDelegate, UINavigation
 //회원가입 정보 유효성 검사
 extension RegisterViewController : UITextFieldDelegate{
     func textFieldDidEndEditing(_ textField: UITextField) {
-        switch textField {
-            case idTF:
-                if (idTF.text?.isEmpty)!{
-                    lblId.textColor = UIColor.red
-                    lblId.text = "아이디가 비어있습니다!"
-                }else if idTF.text!.rangeOfCharacter(from: CharacterSet.alphanumerics) != nil{
-                    lblId.textColor = UIColor.red
-                    lblId.text = "아이디는 대/소문자와 숫자만 사용할 수 있습니다."
-                }else{
-                    lblId.textColor = UIColor.green
-                    lblId.text = "사용가능한 아이디입니다."
-                }
-            break
-            
-            case nicknameTF:
-                if (nicknameTF.text?.isEmpty)!{
-                    lblname.textColor = UIColor.red
-                    lblname.text = "넥네임이 비어있습니다!"
-                }else{
-                    lblname.textColor = UIColor.green
-                    lblname.text = "사용가능한 닉네임입니다."
-                }
-            break
-            case pwTF:
-                let passwordTest = NSPredicate(format: "SELF MATCHES %@", "^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).{8,}$")
-                
-                if (pwTF.text?.isEmpty)!{
-                    lblpw.textColor = UIColor.red
-                    lblpw.text = "비밀번호가 비어있습니다!"
-                }else if !passwordTest.evaluate(with: pwTF.text!){
-                    lblpw.textColor = UIColor.red
-                    lblpw.text = "비밀번호는 대,소문자, 숫자의 조합이고 적어도 8자!"
-                }else {
-                    lblpw.textColor = UIColor.green
-                    lblpw.text = "사용가능한 비밀번호입니다."
-                    
-                }
-            break
-            
-            case pwConTF:
-                if (pwConTF.text?.isEmpty)! {
-                    lblpwCon.textColor = UIColor.red
-                    lblpwCon.text = "비밀번호가 비어있습니다!"
-                }else if pwConTF.text! != pwTF.text!{
-                    lblpwCon.textColor = UIColor.red
-                    lblpwCon.text = "비밀번호가 동일하지 않습니다!"
-                }else{
-                    lblpwCon.text = "사용가능한 비밀번호입니다."
-                    lblpwCon.textColor = UIColor.green
-                }
-            break
-        default:
-            ()
-        }
+        isvalidated(textField: textField)
     }
     
 }

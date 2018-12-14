@@ -64,7 +64,7 @@ class DetailViewController: UIViewController,UITableViewDelegate, UITableViewDat
         let detailHeadView = DetailHeadView.showInTableView(detailViewController: self, movie: movie)
         self.detailHeadView = detailHeadView
         self.tableView.tableHeaderView = detailHeadView
-        
+
         tableView.delegate = self
         tableView.dataSource = self
     }

@@ -24,22 +24,14 @@ class DetailHeadView: UIView {
     //detailviewcontroller를 저장할 변수와 상위 뷰 컨트롤에서 넘겨준 데이터
     var detailViewController : UIViewController!
     var movie : [Dictionary<String, Any>]!
-    
+    var util : Util = Util()
     //댓글 쓰기
     @IBAction func writReview(_ sender: Any) {
         //로그인 확인
         if UserDefaults.standard.string(forKey: "id") == nil{
             
             //로그인 알림
-            let alert = UIAlertController(title: "댓글을 남기려면 로그인 해야 합니다.", message: "", preferredStyle: .alert)
-            
-            alert.addAction(UIAlertAction(title: "로그인", style: .default, handler: {(action) in
-                //로그인 뷰 컨트롤러 가져오기
-                let loginViewController = self.detailViewController?.storyboard?.instantiateViewController(withIdentifier: "LoginViewController") as! LoginViewController
-                self.detailViewController?.present(loginViewController, animated: true)
-            }))
-            alert.addAction(UIAlertAction(title: "취소", style: .cancel))
-            detailViewController?.present(alert, animated: true)
+            util.loginAlert(controller: detailViewController, message: "댓글을 남길려면 로그인해야 합니다!")
             
         }else{
             //대화상자에 삽입할 뷰 컨트롤러 만들기
@@ -128,6 +120,7 @@ class DetailHeadView: UIView {
                 }
                 self.poster.image = UIImage(data: movie[1]["posterData"] as! Data)
                 self.lblTitle.text = (jsonObject["title"] as! NSString) as String
+                self.detailViewController.title = self.lblTitle.text
                 self.lblGenres.text = genres
                 self.lblRelease.text = (jsonObject["release_date"] as! NSString) as String
                 self.lblVoteAverage.text = "\(jsonObject["vote_average"] as! Double)"
@@ -142,7 +135,9 @@ class DetailHeadView: UIView {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        self.lblOverview.sizeToFit()
+        lblTitle.adjustsFontSizeToFitWidth = true
+        lblOverview.sizeToFit()
+        lblVoteCount.adjustsFontSizeToFitWidth = true
         self.frame.size.height = subview.frame.size.height
     }
     
